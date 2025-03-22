@@ -39,7 +39,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             <a href="#features" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
               Features
             </a>
@@ -48,6 +48,15 @@ const Navbar = () => {
             </a>
             <a href="#pricing" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
               Pricing
+            </a>
+            <a href="/guides" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
+              User Guides
+            </a>
+            <a href="/faq" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
+              FAQ
+            </a>
+            <a href="/contact" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
+              Contact
             </a>
             <ThemeToggle />
             <Button 
@@ -97,6 +106,27 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Pricing
+              </a>
+              <a 
+                href="/guides" 
+                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                User Guides
+              </a>
+              <a 
+                href="/faq" 
+                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                FAQ
+              </a>
+              <a 
+                href="/contact" 
+                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
               </a>
               <Button 
                 className="bg-trading-blue hover:bg-trading-blue-dark transition-all duration-300 w-full"

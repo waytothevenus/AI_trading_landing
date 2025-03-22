@@ -6,6 +6,7 @@ import Features from "@/components/Features";
 import Benefits from "@/components/Benefits";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Index = () => {
   useEffect(() => {
@@ -59,6 +60,7 @@ const Index = () => {
         <CTA />
       </main>
       <Footer />
+      <ThemeToggle floating />
     </div>
   );
 };
