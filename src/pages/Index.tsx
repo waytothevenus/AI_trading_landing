@@ -1,12 +1,64 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useEffect } from "react";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import Features from "@/components/Features";
+import Benefits from "@/components/Benefits";
+import CTA from "@/components/CTA";
+import Footer from "@/components/Footer";
 
 const Index = () => {
+  useEffect(() => {
+    // Smooth scroll to anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href')?.substring(1);
+        if (targetId) {
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80, // Offset for navbar
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+    
+    // Add scroll animation for elements
+    const handleScroll = () => {
+      const elements = document.querySelectorAll('.slide-up-fade, .slide-up-fade-delay-1, .slide-up-fade-delay-2, .slide-up-fade-delay-3, .slide-up-fade-delay-4');
+      
+      elements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        
+        if (rect.top <= windowHeight * 0.8) {
+          element.classList.add('visible');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Trigger on initial load
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen overflow-hidden">
+      <Navbar />
+      <main>
+        <Hero />
+        <Features />
+        <Benefits />
+        <CTA />
+      </main>
+      <Footer />
     </div>
   );
 };
