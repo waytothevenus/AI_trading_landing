@@ -108,7 +108,6 @@ const Features = () => {
               color="text-green-500"
             />
           </div>
-
           <div
             className={`transition-all duration-500 delay-200 transform ${
               isVisible
@@ -123,7 +122,6 @@ const Features = () => {
               color="text-purple-500"
             />
           </div>
-
           <div
             className={`transition-all duration-500 delay-300 transform ${
               isVisible

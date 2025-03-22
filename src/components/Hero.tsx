@@ -12,7 +12,6 @@ const Hero = () => {
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 100);
-
     return () => clearTimeout(timer);
   }, []);
 

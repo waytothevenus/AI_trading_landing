@@ -17,7 +17,6 @@ const platformIcons = {
 };
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-white border-t border-trading-gray-light py-12">
       <div className="container mx-auto px-6">
