@@ -75,6 +75,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -92,17 +93,17 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-sans antialiased dark:bg-[#121212];
   }
 
   ::selection {
-    @apply bg-trading-blue/20 text-trading-blue-dark;
+    @apply bg-trading-blue/20 text-trading-blue-dark dark:bg-trading-blue/30 dark:text-trading-blue-light;
   }
 }
 
 @layer components {
   .glass-effect {
-    @apply backdrop-blur-md bg-white/70 border border-white/30;
+    @apply backdrop-blur-md bg-white/70 dark:bg-black/40 border border-white/30 dark:border-white/10;
   }
   
   .section-padding {
@@ -114,11 +115,11 @@
   }
   
   .gradient-bg {
-    background: linear-gradient(150deg, #f8fafc 0%, #eef2ff 100%);
+    @apply bg-gradient-to-br from-[#f8fafc] to-[#eef2ff] dark:from-[#1a1a1a] dark:to-[#2a2a2a];
   }
   
   .glass-card {
-    @apply bg-white/70 backdrop-blur-md border border-white/30 shadow-soft;
+    @apply bg-white/70 backdrop-blur-md border border-white/30 shadow-soft dark:bg-[#1e1e1e]/60 dark:border-white/5;
   }
   
   .animate-delay-100 {
@@ -143,19 +144,11 @@
 }
 
 .feature-card-gradient {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.6) 100%
-  );
+  @apply bg-gradient-to-br from-white/90 to-white/60 dark:from-[#252525]/80 dark:to-[#1e1e1e]/60;
 }
 
 .hero-gradient {
-  background: linear-gradient(
-    145deg,
-    rgba(228, 234, 245, 0.4) 0%,
-    rgba(228, 234, 245, 0) 100%
-  );
+  @apply bg-gradient-to-br from-[#e4eaf5]/40 to-transparent dark:from-[#252525]/40 dark:to-transparent;
 }
 
 .text-balance {

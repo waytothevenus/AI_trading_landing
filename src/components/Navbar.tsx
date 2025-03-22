@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { 
   Menu, 
   X, 
-  BarChart, 
   Bot
 } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,7 +28,7 @@ const Navbar = () => {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : "bg-transparent"
+        isScrolled ? "bg-white/80 dark:bg-trading-gray-dark/80 backdrop-blur-md shadow-sm" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-6 py-4">
@@ -49,6 +49,7 @@ const Navbar = () => {
             <a href="#pricing" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
               Pricing
             </a>
+            <ThemeToggle />
             <Button 
               className="bg-trading-blue hover:bg-trading-blue-dark transition-all duration-300 shadow-button hover:shadow-lg btn-effect"
             >
@@ -57,7 +58,8 @@ const Navbar = () => {
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-4">
+            <ThemeToggle />
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-full hover:bg-trading-gray focus:outline-none"
@@ -73,25 +75,25 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t border-trading-gray-light animate-fade-in">
+          <div className="md:hidden mt-4 py-4 border-t border-trading-gray-light animate-fade-in dark:border-trading-gray-dark">
             <nav className="flex flex-col space-y-4">
               <a 
                 href="#features" 
-                className="px-4 py-2 text-foreground hover:bg-trading-gray rounded-md"
+                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Features
               </a>
               <a 
                 href="#benefits" 
-                className="px-4 py-2 text-foreground hover:bg-trading-gray rounded-md"
+                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Benefits
               </a>
               <a 
                 href="#pricing" 
-                className="px-4 py-2 text-foreground hover:bg-trading-gray rounded-md"
+                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Pricing
