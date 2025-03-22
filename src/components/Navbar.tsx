@@ -46,16 +46,16 @@ const Navbar = () => {
             <a href="#benefits" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
               Benefits
             </a>
+            <a href="#guides" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
+              User Guides
+            </a>
+            <a href="#faq" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
+              FAQ
+            </a>
             <a href="#pricing" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
               Pricing
             </a>
-            <a href="/guides" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
-              User Guides
-            </a>
-            <a href="/faq" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
-              FAQ
-            </a>
-            <a href="/contact" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
+            <a href="#contact" className="text-sm font-medium hover-link-effect text-foreground transition-colors hover:text-trading-blue">
               Contact
             </a>
             <ThemeToggle />
@@ -101,6 +101,20 @@ const Navbar = () => {
                 Benefits
               </a>
               <a 
+                href="#guides" 
+                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                User Guides
+              </a>
+              <a 
+                href="#faq" 
+                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                FAQ
+              </a>
+              <a 
                 href="#pricing" 
                 className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
                 onClick={() => setMobileMenuOpen(false)}
@@ -108,21 +122,7 @@ const Navbar = () => {
                 Pricing
               </a>
               <a 
-                href="/guides" 
-                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                User Guides
-              </a>
-              <a 
-                href="/faq" 
-                className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                FAQ
-              </a>
-              <a 
-                href="/contact" 
+                href="#contact" 
                 className="px-4 py-2 text-foreground hover:bg-trading-gray dark:hover:bg-trading-gray-dark/50 rounded-md"
                 onClick={() => setMobileMenuOpen(false)}
               >

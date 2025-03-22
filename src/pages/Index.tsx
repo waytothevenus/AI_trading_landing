@@ -8,6 +8,9 @@ import Testimonials from "@/components/Testimonials";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import ThemeToggle from "@/components/ThemeToggle";
+import UserGuides from "@/components/UserGuides";
+import FAQ from "@/components/FAQ";
+import Contact from "@/components/Contact";
 
 const Index = () => {
   useEffect(() => {
@@ -58,7 +61,10 @@ const Index = () => {
         <Hero />
         <Features />
         <Benefits />
+        <UserGuides />
+        <FAQ />
         <Testimonials />
+        <Contact />
         <CTA />
       </main>
       <Footer />
