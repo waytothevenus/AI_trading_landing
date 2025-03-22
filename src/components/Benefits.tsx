@@ -6,7 +6,7 @@ import {
   Shield, 
   Bot, 
   BookOpen, 
-  Refresh
+  RefreshCw
 } from "lucide-react";
 
 const Benefits = () => {
@@ -64,7 +64,7 @@ const Benefits = () => {
       delay: "400"
     },
     {
-      icon: <Refresh className="h-5 w-5" />,
+      icon: <RefreshCw className="h-5 w-5" />,
       title: "Continuous Improvement",
       description: "The self-learning AI continuously improves its strategies based on market performance and results.",
       delay: "500"
