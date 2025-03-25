@@ -63,7 +63,6 @@ const Index = () => {
         <Benefits />
         <UserGuides />
         <Testimonials />
-        <Contact />
         <CTA />
         <FAQ />
         <Contact />
