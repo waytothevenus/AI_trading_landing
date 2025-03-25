@@ -96,18 +96,7 @@ const CTA = () => {
             </div>
           </div>
           
-          <div className="mt-20 text-center">
-            <h3 className="text-2xl font-bold mb-6">Still Have Questions?</h3>
-            <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto mb-8">
-              Our team is here to help you make the most of our AI trading bot. Contact us with any questions.
-            </p>
-            <Button 
-              variant="outline" 
-              className="border-trading-blue text-trading-blue hover:bg-trading-blue/5 dark:border-trading-blue/60 dark:text-trading-blue-light dark:hover:bg-trading-blue/10 transition-all duration-300"
-            >
-              Contact Support
-            </Button>
-          </div>
+          
         </div>
       </div>
     </section>

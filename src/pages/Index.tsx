@@ -62,10 +62,10 @@ const Index = () => {
         <Features />
         <Benefits />
         <UserGuides />
-        <FAQ />
         <Testimonials />
-        <Contact />
         <CTA />
+        <FAQ />
+        <Contact />
       </main>
       <Footer />
       <ThemeToggle floating />
