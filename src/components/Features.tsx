@@ -40,40 +40,52 @@ const Features = () => {
     <section id="features" className="section-padding relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Powerful AI Trading Features</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Powerful AI Trading Features
+          </h2>
           <p className="text-trading-gray-medium max-w-2xl mx-auto">
-            Our cutting-edge MT5 trading bot combines artificial intelligence with advanced trading algorithms
-            to deliver exceptional results.
+            Our cutting-edge MT5 trading EA combines artificial intelligence
+            with advanced trading algorithms to deliver exceptional results.
           </p>
         </div>
 
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border border-trading-blue/10">
+          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border-2 border-trading-blue/30">
             <div className="text-3xl md:text-4xl font-bold text-trading-blue mb-2">
               <AnimatedCounter end={95} suffix="%" />
             </div>
             <p className="text-sm text-trading-gray-medium">Trading Accuracy</p>
           </div>
-          
-          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border border-trading-blue/10">
+
+          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border-2 border-trading-blue/30">
             <div className="text-3xl md:text-4xl font-bold text-trading-blue mb-2">
               <AnimatedCounter end={24} suffix="/7" />
             </div>
-            <p className="text-sm text-trading-gray-medium">Automated Trading</p>
+            <p className="text-sm text-trading-gray-medium">
+              Automated Trading
+            </p>
           </div>
-          
-          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border border-trading-blue/10">
+
+          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border-2 border-trading-blue/30">
             <div className="text-3xl md:text-4xl font-bold text-trading-blue mb-2">
               <AnimatedCounter prefix="+" end={300} />
             </div>
-            <p className="text-sm text-trading-gray-medium">Trading Signals Daily</p>
+            <p className="text-sm text-trading-gray-medium">
+              Trading Signals Daily
+            </p>
           </div>
         </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          <div className={`transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div
+            className={`transition-all duration-500 transform ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
             <FeatureCard
               icon={<Bot className="h-5 w-5" />}
               title="AI Market Analysis"
@@ -81,8 +93,14 @@ const Features = () => {
               color="text-trading-blue"
             />
           </div>
-          
-          <div className={`transition-all duration-500 delay-100 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+
+          <div
+            className={`transition-all duration-500 delay-100 transform ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
             <FeatureCard
               icon={<TrendingUp className="h-5 w-5" />}
               title="Smart Trend Detection"
@@ -90,8 +108,14 @@ const Features = () => {
               color="text-green-500"
             />
           </div>
-          
-          <div className={`transition-all duration-500 delay-200 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+
+          <div
+            className={`transition-all duration-500 delay-200 transform ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
             <FeatureCard
               icon={<Clock className="h-5 w-5" />}
               title="24/7 Automated Trading"
@@ -99,8 +123,14 @@ const Features = () => {
               color="text-purple-500"
             />
           </div>
-          
-          <div className={`transition-all duration-500 delay-300 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+
+          <div
+            className={`transition-all duration-500 delay-300 transform ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
             <FeatureCard
               icon={<Shield className="h-5 w-5" />}
               title="Advanced Risk Management"
@@ -108,8 +138,14 @@ const Features = () => {
               color="text-orange-500"
             />
           </div>
-          
-          <div className={`transition-all duration-500 delay-400 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+
+          <div
+            className={`transition-all duration-500 delay-400 transform ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
             <FeatureCard
               icon={<BarChart3 className="h-5 w-5" />}
               title="Performance Analytics"
@@ -117,8 +153,14 @@ const Features = () => {
               color="text-sky-500"
             />
           </div>
-          
-          <div className={`transition-all duration-500 delay-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+
+          <div
+            className={`transition-all duration-500 delay-500 transform ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
             <FeatureCard
               icon={<Settings className="h-5 w-5" />}
               title="Customizable Strategies"
@@ -129,15 +171,24 @@ const Features = () => {
         </div>
 
         {/* Additional Feature Highlight */}
-        <div className={`mt-16 p-8 rounded-xl bg-gradient-to-r from-trading-blue/10 to-trading-blue/5 border border-trading-blue/20 transition-all duration-700 delay-600 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div
+          className={`mt-16 p-8 rounded-xl bg-gradient-to-r from-trading-blue/10 to-trading-blue/5 border border-trading-blue/20 transition-all duration-700 delay-600 transform ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
+        >
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="w-16 h-16 flex items-center justify-center rounded-full bg-trading-blue/20">
               <Zap className="h-8 w-8 text-trading-blue" />
             </div>
             <div>
-              <h3 className="text-xl font-bold mb-2">ML-Enhanced Pattern Recognition</h3>
+              <h3 className="text-xl font-bold mb-2">
+                ML-Enhanced Pattern Recognition
+              </h3>
               <p className="text-trading-gray-medium">
-                Our advanced machine learning algorithms continuously learn from market data to identify complex patterns that are invisible to human traders, giving you an unparalleled advantage in the market.
+                Our advanced machine learning algorithms continuously learn from
+                market data to identify complex patterns that are invisible to
+                human traders, giving you an unparalleled advantage in the
+                market.
               </p>
             </div>
           </div>
