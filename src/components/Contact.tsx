@@ -100,7 +100,7 @@ const Contact = () => {
                     <p className="text-sm text-trading-gray-medium dark:text-gray-400">
                       +1 (555) 123-4567
                     </p>
-                    <p className="text-sm text-trading-gray-light dark:text-gray-500 text-xs">
+                    <p className="text-sm text-trading-gray-light dark:text-gray-500">
                       Mon-Fri, 9AM-6PM EST
                     </p>
                   </div>

@@ -1,32 +1,142 @@
-
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, X } from "lucide-react";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { Button } from "./ui/button";
+import { Switch } from "./ui/switch";
 
 const CTA = () => {
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
-  
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
+    "monthly"
+  );
+  const [showModal, setShowModal] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [stripePromise, setStripePromise] = useState(null);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [showStripe, setShowStripe] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+
+  useEffect(() => {
+    loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY).then((stripe) =>
+      setStripePromise(stripe)
+    );
+  }, []);
+
+  const handleToggleChange = (checked: boolean) => {
+    setBillingCycle(checked ? "yearly" : "monthly");
+  };
+
+  const handleSubmit = () => {
+    if (isConfirmed) {
+      setShowStripe(true);
+    }
+  };
+
   const prices = {
     monthly: 99,
-    yearly: 79 // 20% discount
-  };
-  
-  const handleToggleChange = () => {
-    setBillingCycle(prev => prev === "monthly" ? "yearly" : "monthly");
+    yearly: 79,
   };
 
   const features = [
-    "3 Live Trading Accounts",
-    "15 AI Trading Strategies",
-    "Advanced Risk Management",
-    "Priority Support",
-    "Mobile App Access",
-    "Real-time Analytics Dashboard",
-    "Strategy Backtesting",
-    "API Access",
-    "Unlimited Trading Indicators"
+    "AI-powered MT5 trading bot",
+    "24/7 automated trading",
+    "Real-time market analysis",
+    "Risk management tools",
+    "Priority customer support",
   ];
+
+  const StripePaymentForm = () => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [paymentError, setPaymentError] = useState("");
+    const [isProcessing, setIsProcessing] = useState(false);
+
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      if (!stripe || !elements) return;
+      setIsProcessing(true);
+      setPaymentError("");
+      try {
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+          type: "card",
+          card: elements.getElement(CardElement),
+        });
+        if (error) {
+          setPaymentError(error.message);
+          setIsProcessing(false);
+          return;
+        }
+
+        const response = await fetch("/api/process-payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            paymentMethodId: paymentMethod.id,
+            amount:
+              billingCycle === "monthly"
+                ? prices.monthly * 100
+                : prices.yearly * 100 * 12,
+            userId: userId,
+            billingCycle,
+          }),
+        });
+        const result = await response.json();
+        if (result?.error) {
+          setPaymentError(result.error);
+          setIsProcessing(false);
+        } else {
+          setPaymentSuccess(true);
+        }
+      } catch (error) {
+        setPaymentError(error.message);
+        setIsProcessing(false);
+      } finally {
+        setIsProcessing(false);
+      }
+    };
+
+    return (
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="border rounded-md p-3">
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "#323232",
+                  "::placeholder": {
+                    color: "#A0A0A0",
+                  },
+                },
+                invalid: {
+                  color: "#9E2146",
+                },
+              },
+            }}
+          />
+        </div>
+        {paymentError && <p className="text-red-500 text-sm">{paymentError}</p>}
+        <button
+          type="submit"
+          className="w-full bg-trading-blue hover:bg-trading-blue-dark transition-all duration-300 shadow-button hover:shadow-lg btn-effect"
+          disabled={isProcessing || isProcessing}
+        >
+          {isProcessing
+            ? "Processing..."
+            : `Pay $${
+                billingCycle === "monthly" ? prices.monthly : prices.yearly * 12
+              }`}
+        </button>
+      </form>
+    );
+  };
 
   return (
     <section id="pricing" className="section-padding relative overflow-hidden">
@@ -35,44 +145,75 @@ const CTA = () => {
           <div className="glass-card rounded-2xl p-8 md:p-12 relative overflow-hidden">
             {/* Background gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-trading-blue/10 to-trading-blue/5 dark:from-trading-blue/5 dark:to-black/20 z-0"></div>
-            
+
             <div className="relative z-10">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Trading?</h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Ready to Transform Your Trading?
+                </h2>
                 <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto">
-                  Join thousands of traders who are already benefiting from our AI-powered MT5 trading bot.
+                  Join thousands of traders who are already benefiting from our
+                  AI-powered MT5 trading bot.
                 </p>
               </div>
-              
+
               <div className="flex justify-center mb-8">
                 <div className="inline-flex items-center gap-3 p-1 rounded-full bg-trading-gray dark:bg-trading-gray-dark/50 border border-trading-gray-light dark:border-trading-gray-dark">
-                  <span className={`px-4 py-2 text-sm transition-all duration-300 ${billingCycle === "monthly" ? "bg-white dark:bg-trading-gray-dark text-trading-blue-dark dark:text-white font-medium rounded-full shadow-sm" : ""}`}>
+                  <span
+                    className={`px-4 py-2 text-sm transition-all duration-300 ${
+                      billingCycle === "monthly"
+                        ? "bg-white dark:bg-trading-gray-dark text-trading-blue-dark dark:text-white font-medium rounded-full shadow-sm"
+                        : ""
+                    }`}
+                  >
                     Monthly
                   </span>
-                  <Switch 
-                    checked={billingCycle === "yearly"} 
+                  <Switch
+                    checked={billingCycle === "yearly"}
                     onCheckedChange={handleToggleChange}
                     className="data-[state=checked]:bg-trading-blue"
                   />
-                  <span className={`px-4 py-2 text-sm transition-all duration-300 ${billingCycle === "yearly" ? "bg-white dark:bg-trading-gray-dark text-trading-blue-dark dark:text-white font-medium rounded-full shadow-sm" : ""}`}>
-                    Yearly <span className="text-trading-green text-xs font-semibold">Save 20%</span>
+                  <span
+                    className={`px-4 py-2 text-sm transition-all duration-300 ${
+                      billingCycle === "yearly"
+                        ? "bg-white dark:bg-trading-gray-dark text-trading-blue-dark dark:text-white font-medium rounded-full shadow-sm"
+                        : ""
+                    }`}
+                  >
+                    Yearly{" "}
+                    <span className="text-trading-green text-xs font-semibold">
+                      Save 20%
+                    </span>
                   </span>
                 </div>
               </div>
-              
+
               <div className="flex justify-center">
                 <div className="bg-white/90 dark:bg-trading-gray-dark/90 backdrop-blur-sm rounded-xl p-8 border-2 border-trading-blue shadow-feature transition-all duration-300 hover:shadow-lg hover:-translate-y-1 max-w-lg w-full">
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <h3 className="text-xl font-semibold">Professional Plan</h3>
-                      <p className="text-trading-gray-medium dark:text-gray-400 text-sm">Complete trading solution</p>
+                      <h3 className="text-xl font-semibold">
+                        Professional Plan
+                      </h3>
+                      <p className="text-trading-gray-medium dark:text-gray-400 text-sm">
+                        Complete trading solution
+                      </p>
                     </div>
                     <div className="text-right">
-                      <div className="text-3xl font-bold">${prices[billingCycle]}<span className="text-sm font-normal text-trading-gray-medium dark:text-gray-400">/{billingCycle === "monthly" ? "mo" : "mo"}</span></div>
-                      {billingCycle === "yearly" && <p className="text-trading-green text-xs font-semibold">Billed annually (${prices.yearly * 12})</p>}
+                      <div className="text-3xl font-bold">
+                        ${prices[billingCycle]}
+                        <span className="text-sm font-normal text-trading-gray-medium dark:text-gray-400">
+                          /{billingCycle === "monthly" ? "mo" : "mo"}
+                        </span>
+                      </div>
+                      {billingCycle === "yearly" && (
+                        <p className="text-trading-green text-xs font-semibold">
+                          Billed annually (${prices.yearly * 12})
+                        </p>
+                      )}
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4 mb-8">
                     {features.map((feature, i) => (
                       <div key={i} className="flex items-start">
@@ -83,11 +224,14 @@ const CTA = () => {
                       </div>
                     ))}
                   </div>
-                  
-                  <Button className="w-full bg-trading-blue hover:bg-trading-blue-dark transition-all duration-300 shadow-button hover:shadow-lg btn-effect">
+
+                  <Button
+                    className="w-full bg-trading-blue hover:bg-trading-blue-dark transition-all duration-300 shadow-button hover:shadow-lg btn-effect"
+                    onClick={() => setShowModal(true)}
+                  >
                     Get Started Now
                   </Button>
-                  
+
                   <p className="text-xs text-center text-trading-gray-medium dark:text-gray-400 mt-4">
                     14-day money-back guarantee. No questions asked.
                   </p>
@@ -95,10 +239,122 @@ const CTA = () => {
               </div>
             </div>
           </div>
-          
-          
         </div>
       </div>
+
+      {/* User ID Confirmation Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-trading-gray-dark rounded-xl p-6 max-w-md w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold">Confirm Your User ID</h3>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="userId"
+                  className="block text-sm font-medium mb-1"
+                >
+                  MT5 User ID
+                </label>
+                <input
+                  id="userId"
+                  type="text"
+                  value={userId}
+                  onChange={(e) => setUserId(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md dark:bg-trading-gray-dark/80"
+                  placeholder="Enter your MT5 user ID"
+                />
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  id="confirmCheckbox"
+                  type="checkbox"
+                  checked={isConfirmed}
+                  onChange={(e) => setIsConfirmed(e.target.checked)}
+                  className="h-4 w-4 rounded border-gray-300 text-trading-blue focus:ring-trading-blue"
+                />
+                <label htmlFor="confirmCheckbox" className="ml-2 text-sm">
+                  I confirm this is my correct MT5 user ID
+                </label>
+              </div>
+
+              <Button
+                className="w-full bg-trading-blue hover:bg-trading-blue-dark mt-4"
+                disabled={!isConfirmed || !userId}
+                onClick={handleSubmit}
+              >
+                Confirm and Continue to Payment
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Stripe Payment Element */}
+      {showStripe && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-trading-gray-dark rounded-xl p-6 max-w-md w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold">Add Payment Method</h3>
+              <button
+                onClick={() => setShowStripe(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <Elements
+              stripe={stripePromise}
+              options={{
+                mode: "payment",
+                amount:
+                  billingCycle === "monthly"
+                    ? prices.monthly * 100
+                    : prices.yearly * 100 * 12,
+                currency: "usd",
+              }}
+            >
+              {/* Your Stripe payment form component would go here */}
+              <StripePaymentForm />
+            </Elements>
+          </div>
+        </div>
+      )}
+      {paymentSuccess && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-trading-gray-dark rounded-xl p-6 max-w-md w-full text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Check className="h-8 w-8 text-green-600" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Payment Successful!</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              Your subscription is now active. Your MT5 account ({userId}) will
+              be upgraded shortly.
+            </p>
+            <Button
+              className="w-full bg-trading-blue hover:bg-trading-blue-dark mt-4"
+              onClick={() => {
+                setShowModal(false);
+                setPaymentSuccess(false);
+                setIsConfirmed(false);
+                setUserId("");
+              }}
+            >
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
