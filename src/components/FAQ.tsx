@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -8,17 +9,17 @@ import { Input } from "@/components/ui/input";
 const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFaqs, setFilteredFaqs] = useState<typeof faqs>(faqs);
-
+  const navigate = useNavigate();
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     setSearchTerm(term);
-    
+
     if (term.trim() === "") {
       setFilteredFaqs(faqs);
     } else {
       const filtered = faqs.filter(
-        faq => 
-          faq.question.toLowerCase().includes(term.toLowerCase()) || 
+        (faq) =>
+          faq.question.toLowerCase().includes(term.toLowerCase()) ||
           faq.answer.toLowerCase().includes(term.toLowerCase())
       );
       setFilteredFaqs(filtered);
@@ -58,7 +59,12 @@ const FAQ = () => {
                 term or contact support.
               </p>
               <Button className="bg-trading-blue hover:bg-trading-blue-dark">
-                Contact Support
+                <a
+                  href="#contact"
+                  className="text-sm hover:text-decoration-none font-medium text-foreground"
+                >
+                  Contact Support
+                </a>
               </Button>
             </div>
           ) : (
@@ -90,7 +96,12 @@ const FAQ = () => {
             variant="outline"
             className="border-trading-blue text-trading-blue hover:bg-trading-blue/5 dark:border-trading-blue/60 dark:text-trading-blue-light dark:hover:bg-trading-blue/10 transition-all duration-300"
           >
-            Contact Support
+            <a
+              href="#contact"
+              className="text-sm hover:text-decoration-none font-medium text-foreground "
+            >
+              Contact Support
+            </a>
           </Button>
         </div>
       </div>

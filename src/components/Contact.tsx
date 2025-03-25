@@ -59,7 +59,7 @@ const Contact = () => {
       toast({
         title: "Message sent successfully",
         description: "We'll get back to you as soon as possible.",
-        icon: <CheckCircle2 className="h-4 w-4 text-green-500" />
+        // icon: <CheckCircle2 className="h-4 w-4 text-green-500" />
       });
     }, 1500);
   };
