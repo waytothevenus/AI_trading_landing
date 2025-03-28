@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { Check, X } from "lucide-react";
 import {
   Elements,
-  CardElement,
+  PaymentElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "./ui/button";
 import { Switch } from "./ui/switch";
+import { toast } from "@/hooks/use-toast";
 
 const CTA = () => {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
@@ -20,6 +21,7 @@ const CTA = () => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [showStripe, setShowStripe] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY).then((stripe) =>
@@ -53,80 +55,76 @@ const CTA = () => {
   const StripePaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
-    const [paymentError, setPaymentError] = useState("");
-    const [isProcessing, setIsProcessing] = useState(false);
 
     const handleSubmit = async (event) => {
       event.preventDefault();
       if (!stripe || !elements) return;
-      setIsProcessing(true);
-      setPaymentError("");
-      try {
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-          type: "card",
-          card: elements.getElement(CardElement),
-        });
-        if (error) {
-          setPaymentError(error.message);
-          setIsProcessing(false);
-          return;
-        }
 
-        const response = await fetch("/api/process-payment", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            paymentMethodId: paymentMethod.id,
-            amount:
-              billingCycle === "monthly"
-                ? prices.monthly * 100
-                : prices.yearly * 100 * 12,
-            userId: userId,
-            billingCycle,
-          }),
-        });
+      setIsProcessing(true);
+
+      try {
+        const response = await fetch(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/stripe/create-payment-intent`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount:
+                billingCycle === "monthly"
+                  ? prices.monthly
+                  : prices.yearly * 12,
+              mt5UserId: userId,
+              billingCycle,
+            }),
+          }
+        );
+
         const result = await response.json();
-        if (result?.error) {
-          setPaymentError(result.error);
+        if (!response.ok) throw new Error(result.error || "Payment failed");
+
+        // Confirm payment with PaymentElement
+        if (response.ok) {
+          const { error } = await stripe.confirmPayment({
+            elements,
+            clientSecret: result.clientSecret,
+            confirmParams: {
+              return_url: `${window.location.origin}`,
+            },
+            redirect: "if_required",
+          });
+
+          if (error) throw error;
           setIsProcessing(false);
-        } else {
+          setShowStripe(false);
           setPaymentSuccess(true);
+          setIsConfirmed(true);
         }
       } catch (error) {
-        setPaymentError(error.message);
+        console.error(error);
+        toast({
+          variant: "destructive",
+          title: "Invalid submission",
+          description: "Please fill all required fields.",
+        });
+        setShowStripe(false);
+        setIsConfirmed(false);
         setIsProcessing(false);
       } finally {
         setIsProcessing(false);
+        setShowStripe(false);
+        setIsConfirmed(false);
       }
     };
 
     return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="border rounded-md p-3">
-          <CardElement
-            options={{
-              style: {
-                base: {
-                  fontSize: "16px",
-                  color: "#323232",
-                  "::placeholder": {
-                    color: "#A0A0A0",
-                  },
-                },
-                invalid: {
-                  color: "#9E2146",
-                },
-              },
-            }}
-          />
-        </div>
-        {paymentError && <p className="text-red-500 text-sm">{paymentError}</p>}
+      <form onSubmit={handleSubmit}>
+        <PaymentElement />
         <button
           type="submit"
-          className="w-full bg-trading-blue hover:bg-trading-blue-dark transition-all duration-300 shadow-button hover:shadow-lg btn-effect"
-          disabled={isProcessing || isProcessing}
+          className="w-full bg-trading-blue py-2 rounded-sm hover:bg-trading-blue-dark mt-4"
+          disabled={!stripe || isProcessing}
         >
           {isProcessing
             ? "Processing..."
@@ -322,9 +320,14 @@ const CTA = () => {
                     ? prices.monthly * 100
                     : prices.yearly * 100 * 12,
                 currency: "usd",
+                appearance: {
+                  theme: "stripe",
+                  variables: {
+                    colorText: "#00ffff",
+                  },
+                },
               }}
             >
-              {/* Your Stripe payment form component would go here */}
               <StripePaymentForm />
             </Elements>
           </div>
