@@ -100,6 +100,11 @@ const CTA = () => {
       setIsProcessing(true);
 
       try {
+        const { error: submitError } = await elements.submit();
+        if (submitError) {
+          console.error("Submit error:", submitError);
+          throw submitError;
+        }
         const { error } = await stripe.confirmPayment({
           elements,
           clientSecret, // Use the clientSecret passed as a prop
