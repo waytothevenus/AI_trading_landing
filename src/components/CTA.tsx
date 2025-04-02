@@ -55,6 +55,8 @@ const CTA = () => {
   const StripePaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
+    const [isPaymentElementComplete, setIsPaymentElementComplete] =
+      useState(false);
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -96,6 +98,13 @@ const CTA = () => {
             redirect: "if_required",
           });
 
+          console.log(
+            "Payment result:",
+            error,
+            "Client secret:",
+            result.clientSecret
+          );
+
           if (error) throw error;
           setIsProcessing(false);
           setShowStripe(false);
@@ -107,7 +116,7 @@ const CTA = () => {
         toast({
           variant: "destructive",
           title: "Invalid submission",
-          description: "Please fill all required fields.",
+          description: error?.message,
         });
         setShowStripe(false);
         setIsConfirmed(false);
@@ -119,13 +128,17 @@ const CTA = () => {
       }
     };
 
+    const handleChange = (event) => {
+      setIsPaymentElementComplete(event.complete);
+    };
+
     return (
       <form onSubmit={handleSubmit}>
-        <PaymentElement />
+        <PaymentElement onChange={handleChange} />
         <button
           type="submit"
           className="w-full bg-trading-blue py-2 rounded-sm hover:bg-trading-blue-dark mt-4"
-          disabled={!stripe || isProcessing}
+          disabled={!stripe || isProcessing || !isPaymentElementComplete}
         >
           {isProcessing
             ? "Processing..."
