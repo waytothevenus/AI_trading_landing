@@ -63,6 +63,7 @@ const CTA = () => {
       setIsProcessing(true);
 
       try {
+        await elements.submit();
         const response = await fetch(
           `${
             import.meta.env.VITE_BACKEND_URL
