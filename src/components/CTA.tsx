@@ -18,6 +18,7 @@ const CTA = () => {
   const [showModal, setShowModal] = useState(false);
   const [userId, setUserId] = useState("");
   const [stripePromise, setStripePromise] = useState(null);
+  const [clientSecret, setClientSecret] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [showStripe, setShowStripe] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -52,7 +53,11 @@ const CTA = () => {
     "Priority customer support",
   ];
 
-  const StripePaymentForm = () => {
+  const StripePaymentForm = ({
+    setClientSecret,
+  }: {
+    setClientSecret: (clientSecret: string) => void;
+  }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [isPaymentElementComplete, setIsPaymentElementComplete] =
@@ -88,6 +93,7 @@ const CTA = () => {
 
         // Confirm payment with PaymentElement
         if (response.ok) {
+          setClientSecret(result.clientSecret);
           const { error } = await stripe.confirmPayment({
             elements,
             clientSecret: result.clientSecret,
@@ -327,7 +333,8 @@ const CTA = () => {
             <Elements
               stripe={stripePromise}
               options={{
-                mode: "payment",
+                // mode: "payment",
+                clientSecret,
                 amount:
                   billingCycle === "monthly"
                     ? prices.monthly * 100
@@ -341,7 +348,7 @@ const CTA = () => {
                 },
               }}
             >
-              <StripePaymentForm />
+              <StripePaymentForm setClientSecret={setClientSecret} />
             </Elements>
           </div>
         </div>
