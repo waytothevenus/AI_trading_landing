@@ -25,14 +25,17 @@ const CTA = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [stripeLoading, setStripeLoading] = useState(true);
 
-  useEffect(() => {
-    loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY).then((stripe) =>
-      setStripePromise(stripe)
-    );
-    stripePromise?.then(()=>{
-      setStripeLoading(false);
-    })
-  }, []);
+ useEffect(() => {
+   const loadStripeInstance = async () => {
+     const stripe = await loadStripe(
+       import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+     );
+     setStripePromise(stripe);
+     setStripeLoading(false); // Set loading to false after Stripe is loaded
+   };
+
+   loadStripeInstance();
+ }, []);
 
   const handleToggleChange = (checked: boolean) => {
     setBillingCycle(checked ? "yearly" : "monthly");
