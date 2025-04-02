@@ -59,6 +59,7 @@ const CTA = () => {
       const result = await response.json();
       if (!response.ok)
         throw new Error(result.error || "Failed to create payment intent");
+      console.log("Payment Intent Result:", result.clientSecret);
 
       setClientSecret(result.clientSecret);
       setShowStripe(true); // Show the Stripe payment form after clientSecret is set
@@ -95,7 +96,10 @@ const CTA = () => {
 
     const handleSubmit = async (event) => {
       event.preventDefault();
-      if (!stripe || !elements) return;
+      if (!stripe || !elements) {
+        console.error("Stripe or Elements not initialized");
+        return;
+      }
 
       setIsProcessing(true);
 
@@ -328,12 +332,13 @@ const CTA = () => {
             <Elements
               stripe={stripePromise}
               options={{
-                mode: "payment",
-                amount:
-                  billingCycle === "monthly"
-                    ? prices.monthly * 100
-                    : prices.yearly * 100 * 12,
-                currency: "usd",
+                clientSecret: clientSecret,
+                // mode: "payment",
+                // amount:
+                //   billingCycle === "monthly"
+                //     ? prices.monthly * 100
+                //     : prices.yearly * 100 * 12,
+                // currency: "usd",
                 appearance: {
                   theme: "stripe",
                   variables: {
