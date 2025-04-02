@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Check, X } from "lucide-react";
+import { Check, X, Loader } from "lucide-react";
 import {
   Elements,
   PaymentElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe, StripePaymentElementChangeEvent } from "@stripe/stripe-js";
 import { Button } from "./ui/button";
 import { Switch } from "./ui/switch";
 import { toast } from "@/hooks/use-toast";
@@ -23,11 +23,15 @@ const CTA = () => {
   const [showStripe, setShowStripe] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [stripeLoading, setStripeLoading] = useState(true);
 
   useEffect(() => {
     loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY).then((stripe) =>
       setStripePromise(stripe)
     );
+    stripePromise?.then(()=>{
+      setStripeLoading(false);
+    })
   }, []);
 
   const handleToggleChange = (checked: boolean) => {
@@ -93,39 +97,61 @@ const CTA = () => {
     const elements = useElements();
     const [isPaymentElementComplete, setIsPaymentElementComplete] =
       useState(false);
+    const [message, setMessage] = useState<string | null>(null);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
+
       if (!stripe || !elements) {
-        console.error("Stripe or Elements not initialized");
+        console.error("Stripe.js hasn't loaded yet");
         return;
       }
 
       setIsProcessing(true);
+      setMessage(null);
 
       try {
+        // 1. Trigger form validation
         const { error: submitError } = await elements.submit();
         if (submitError) {
-          console.error("Submit error:", submitError);
           throw submitError;
         }
-        const { error } = await stripe.confirmPayment({
+
+        // 2. Confirm the payment
+        const { error, paymentIntent } = await stripe.confirmPayment({
           elements,
-          clientSecret, // Use the clientSecret passed as a prop
+          clientSecret,
           confirmParams: {
-            return_url: `${window.location.origin}`,
+            return_url: `${window.location.origin}/success`,
           },
           redirect: "if_required",
         });
 
+        // 3. Handle result
         if (error) {
-          console.error("Payment error:", error);
           throw error;
         }
 
-        setPaymentSuccess(true);
-        setShowStripe(false);
+        if (paymentIntent) {
+          switch (paymentIntent.status) {
+            case "succeeded":
+              setMessage("Payment succeeded!");
+              setPaymentSuccess(true);
+              setShowStripe(false);
+              break;
+            case "processing":
+              setMessage("Your payment is processing.");
+              break;
+            case "requires_payment_method":
+              setMessage("Your payment was not successful, please try again.");
+              break;
+            default:
+              setMessage("Something went wrong.");
+              break;
+          }
+        }
       } catch (error) {
+        console.error("Payment error:", error);
         toast({
           variant: "destructive",
           title: "Payment Error",
@@ -136,26 +162,47 @@ const CTA = () => {
       }
     };
 
-    const handleChange = (event) => {
+    const handleChange = (event: StripePaymentElementChangeEvent) => {
       setIsPaymentElementComplete(event.complete);
     };
 
     return (
-      <form onSubmit={handleSubmit}>
-        <PaymentElement onChange={handleChange} />
+      <form id="payment-form" onSubmit={handleSubmit}>
+        <PaymentElement
+          id="payment-element"
+          onChange={handleChange}
+          options={{
+            layout: {
+              type: "tabs",
+              defaultCollapsed: false,
+            },
+          }}
+        />
         <button
           type="submit"
           className="w-full bg-trading-blue py-2 rounded-sm hover:bg-trading-blue-dark mt-4"
           disabled={!stripe || isProcessing || !isPaymentElementComplete}
         >
-          {isProcessing ? "Processing..." : "Pay"}
+          {isProcessing
+            ? "Processing..."
+            : `Pay $${
+                billingCycle === "monthly" ? prices.monthly : prices.yearly * 12
+              }`}
         </button>
+        {message && <div id="payment-message">{message}</div>}
       </form>
     );
   };
 
   return (
     <section id="pricing" className="section-padding relative overflow-hidden">
+      {
+        stripeLoading && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <Loader className="h-8 w-8 animate-spin text-trading-blue" />
+          </div>
+        )
+      } 
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <div className="glass-card rounded-2xl p-8 md:p-12 relative overflow-hidden">
@@ -316,7 +363,7 @@ const CTA = () => {
       )}
 
       {/* Stripe Payment Element */}
-      {showStripe && clientSecret && (
+      {showStripe && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-trading-gray-dark rounded-xl p-6 max-w-md w-full">
             <div className="flex justify-between items-center mb-4">
@@ -329,26 +376,28 @@ const CTA = () => {
               </button>
             </div>
 
-            <Elements
-              stripe={stripePromise}
-              options={{
-                clientSecret: clientSecret,
-                // mode: "payment",
-                // amount:
-                //   billingCycle === "monthly"
-                //     ? prices.monthly * 100
-                //     : prices.yearly * 100 * 12,
-                // currency: "usd",
-                appearance: {
-                  theme: "stripe",
-                  variables: {
-                    colorText: "#00ffff",
+            {clientSecret && (
+              <Elements
+                stripe={stripePromise}
+                options={{
+                  clientSecret,
+                  // mode: "payment",
+                  // amount:
+                  //   billingCycle === "monthly"
+                  //     ? prices.monthly * 100
+                  //     : prices.yearly * 100 * 12,
+                  // currency: "usd",
+                  appearance: {
+                    theme: "stripe",
+                    variables: {
+                      colorText: "#00ffff",
+                    },
                   },
-                },
-              }}
-            >
-              <StripePaymentForm clientSecret={clientSecret} />
-            </Elements>
+                }}
+              >
+                <StripePaymentForm clientSecret={clientSecret} />
+              </Elements>
+            )}
           </div>
         </div>
       )}
