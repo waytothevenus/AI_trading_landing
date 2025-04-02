@@ -328,13 +328,12 @@ const CTA = () => {
             <Elements
               stripe={stripePromise}
               options={{
-                // mode: "payment",
-                clientSecret,
-                // amount:
-                //   billingCycle === "monthly"
-                //     ? prices.monthly * 100
-                //     : prices.yearly * 100 * 12,
-                // currency: "usd",
+                mode: "payment",
+                amount:
+                  billingCycle === "monthly"
+                    ? prices.monthly * 100
+                    : prices.yearly * 100 * 12,
+                currency: "usd",
                 appearance: {
                   theme: "stripe",
                   variables: {
