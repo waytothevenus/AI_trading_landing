@@ -20,22 +20,21 @@ const CTA = () => {
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [showStripe, setShowStripe] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [stripeLoading, setStripeLoading] = useState(true);
 
- useEffect(() => {
-   const loadStripeInstance = async () => {
-     const stripe = await loadStripe(
-       import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
-     );
-     setStripePromise(stripe);
-     setStripeLoading(false); // Set loading to false after Stripe is loaded
-   };
+  useEffect(() => {
+    const loadStripeInstance = async () => {
+      const stripe = await loadStripe(
+        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+      );
+      setStripePromise(stripe);
+      setStripeLoading(false); // Set loading to false after Stripe is loaded
+    };
 
-   loadStripeInstance();
- }, []);
+    loadStripeInstance();
+  }, []);
 
   const handleToggleChange = (checked: boolean) => {
     setBillingCycle(checked ? "yearly" : "monthly");
@@ -70,7 +69,6 @@ const CTA = () => {
 
       setClientSecret(result.clientSecret);
       setStripeLoading(false);
-      setShowStripe(true);
     } catch (error) {
       console.error(error);
       toast({
@@ -100,9 +98,9 @@ const CTA = () => {
   const StripePaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
-
+    const [isPaymentElementComplete, setIsPaymentElementComplete] =
+      useState(false);
     const [message, setMessage] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
       if (!stripe) {
@@ -114,6 +112,7 @@ const CTA = () => {
       );
 
       if (!clientSecret) {
+        console.error("No client secret found in URL");
         return;
       }
 
@@ -133,12 +132,10 @@ const CTA = () => {
         return;
       }
 
-      setIsLoading(true);
-
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: window.location.origin,
+          return_url: window.location.origin + "/payment_intent",
         },
       });
 
@@ -148,21 +145,39 @@ const CTA = () => {
       ) {
         setMessage(error.message);
       }
-
-      setIsLoading(false);
+    };
+    const handleChange = (event: StripePaymentElementChangeEvent) => {
+      setIsPaymentElementComplete(event.complete);
     };
 
     return (
       <form onSubmit={handleSubmit}>
         <p className="text-black mb-4">Complete your payment here!</p>
-        <PaymentElement />
+        <PaymentElement onChange={handleChange} />
         <button
-          className="bg-black rounded-xl text-white p-2 mt-6 mb-2"
-          disabled={isLoading || !stripe || !elements}
+          type="submit"
+          disabled={!stripe || isProcessing || !isPaymentElementComplete}
+          className={`w-full mt-4 py-2 rounded-sm ${
+            !stripe || isProcessing || !isPaymentElementComplete
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-trading-blue hover:bg-trading-blue-dark"
+          }`}
         >
-          {isLoading ? "Loading..." : "Pay now"}
+          {isProcessing
+            ? "Processing..."
+            : `Pay $${
+                billingCycle === "monthly" ? prices.monthly : prices.yearly
+              }`}
         </button>
-        {message && <div>{message}</div>}
+        {message && (
+          <div
+            className={`mt-4 p-2 text-center ${
+              message.includes("succeeded") ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {message}
+          </div>
+        )}
       </form>
     );
   };
@@ -334,13 +349,13 @@ const CTA = () => {
       )}
 
       {/* Stripe Payment Element */}
-      {showStripe && clientSecret && stripePromise && (
+      {clientSecret && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-trading-gray-dark rounded-xl p-6 max-w-md w-full">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-semibold">Add Payment Method</h3>
               <button
-                onClick={() => setShowStripe(false)}
+                onClick={() => setClientSecret("")}
                 className="text-gray-500 hover:text-gray-700"
                 disabled={isProcessing}
               >
