@@ -30,7 +30,7 @@ const CTA = () => {
         import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
       );
       setStripePromise(stripe);
-      setStripeLoading(false); // Set loading to false after Stripe is loaded
+      setStripeLoading(false);
     };
 
     loadStripeInstance();
@@ -122,6 +122,7 @@ const CTA = () => {
             ? "Your payment succeeded"
             : "Unexpected error occurred"
         );
+        setPaymentSuccess(paymentIntent.status === "succeeded");
       });
     }, [stripe]);
 
@@ -135,7 +136,7 @@ const CTA = () => {
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: window.location.origin + "/payment_intent",
+          return_url: window.location.origin,
         },
       });
 
