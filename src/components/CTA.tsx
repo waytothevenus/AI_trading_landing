@@ -146,19 +146,16 @@ const CTA = () => {
       setMessage(null);
 
       try {
-        // Verify the payment element exists
         const paymentElement = elements.getElement(PaymentElement);
         if (!paymentElement) {
           throw new Error("Payment element not found");
         }
 
-        // Trigger form validation
         const { error: submitError } = await elements.submit();
         if (submitError) {
           throw submitError;
         }
 
-        // Confirm payment
         const { error, paymentIntent } = await stripe.confirmPayment({
           elements,
           clientSecret,
@@ -402,7 +399,7 @@ const CTA = () => {
               <h3 className="text-xl font-semibold">Complete Your Payment</h3>
               <button
                 onClick={() => {
-                  setClientSecret(""); // Reset clientSecret to close the modal
+                  setClientSecret("");
                 }}
                 className="text-gray-500 hover:text-gray-700"
               >
