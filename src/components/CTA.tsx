@@ -80,7 +80,7 @@ const CTA = () => {
 
       console.log("Payment Intent Result:", result.clientSecret);
       setClientSecret(result.clientSecret);
-      setShowModal(false); // Close the modal
+      setShowModal(false);
     } catch (error) {
       console.error(error);
       toast({
@@ -107,102 +107,102 @@ const CTA = () => {
     "Priority customer support",
   ];
 
-const StripePaymentForm = ({ clientSecret }: { clientSecret: string }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isPaymentElementComplete, setIsPaymentElementComplete] =
-    useState(false);
-  const [message, setMessage] = useState(null);
+  const StripePaymentForm = ({ clientSecret }: { clientSecret: string }) => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [isPaymentElementComplete, setIsPaymentElementComplete] =
+      useState(false);
+    const [message, setMessage] = useState(null);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+    const handleSubmit = async (event: React.FormEvent) => {
+      event.preventDefault();
 
-    if (!stripe || !elements) {
-      console.error("Stripe.js has not loaded yet.");
-      return;
-    }
-
-    setIsProcessing(true);
-    setMessage(null);
-
-    try {
-      // Submit the PaymentElement to validate payment details
-      const { error: submitError } = await elements.submit();
-      if (submitError) {
-        console.error("Submit error:", submitError);
-        throw submitError;
+      if (!stripe || !elements) {
+        console.error("Stripe.js has not loaded yet.");
+        return;
       }
 
-      // Confirm the payment
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        clientSecret,
-        confirmParams: {
-          return_url: `${window.location.origin}/success`,
-        },
-        redirect: "if_required",
-      });
+      setIsProcessing(true);
+      setMessage(null);
 
-      if (error) {
-        console.error("Payment error:", error);
-        throw error;
-      }
-
-      if (paymentIntent) {
-        switch (paymentIntent.status) {
-          case "succeeded":
-            setMessage("Payment succeeded!");
-            setPaymentSuccess(true);
-            break;
-          case "processing":
-            setMessage("Your payment is processing.");
-            break;
-          case "requires_payment_method":
-            setMessage("Payment failed. Please try again.");
-            break;
-          default:
-            setMessage("Something went wrong.");
-            break;
+      try {
+        const { error: submitError } = await elements.submit();
+        if (submitError) {
+          console.error("Submit error:", submitError);
+          throw submitError;
         }
+
+        const { error, paymentIntent } = await stripe.confirmPayment({
+          elements,
+          clientSecret,
+          confirmParams: {
+            return_url: `${window.location.origin}/success`,
+          },
+          redirect: "if_required",
+        });
+
+        if (error) {
+          console.error("Payment error:", error);
+          throw error;
+        }
+
+        if (paymentIntent) {
+          switch (paymentIntent.status) {
+            case "succeeded":
+              setMessage("Payment succeeded!");
+              setPaymentSuccess(true);
+              break;
+            case "processing":
+              setMessage("Your payment is processing.");
+              break;
+            case "requires_payment_method":
+              setMessage("Payment failed. Please try again.");
+              break;
+            default:
+              setMessage("Something went wrong.");
+              break;
+          }
+        }
+      } catch (error) {
+        console.error("Payment error:", error);
+        toast({
+          variant: "destructive",
+          title: "Payment Error",
+          description: error.message,
+        });
+      } finally {
+        setIsProcessing(false);
       }
-    } catch (error) {
-      console.error("Payment error:", error);
-      toast({
-        variant: "destructive",
-        title: "Payment Error",
-        description: error.message,
-      });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+    };
 
-  const handleChange = (event: StripePaymentElementChangeEvent) => {
-    setIsPaymentElementComplete(event.complete);
-  };
+    const handleChange = (event: StripePaymentElementChangeEvent) => {
+      setIsPaymentElementComplete(event.complete);
+    };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <PaymentElement onChange={handleChange} />
-      <button
-        type="submit"
-        className="w-full bg-trading-blue py-2 rounded-sm hover:bg-trading-blue-dark mt-4"
-        disabled={!stripe || isProcessing || !isPaymentElementComplete}
-      >
-        {isProcessing ? "Processing..." : `Pay ${billingCycle === 'monthly' ? '$99' : '$948'}`}
-      </button>
-      {message && (
-        <div
-          className={`mt-4 p-2 text-center ${
-            message.includes("succeeded") ? "text-green-600" : "text-red-600"
-          }`}
+    return (
+      <form onSubmit={handleSubmit}>
+        <PaymentElement onChange={handleChange} />
+        <button
+          type="submit"
+          className="w-full bg-trading-blue py-2 rounded-sm hover:bg-trading-blue-dark mt-4"
+          disabled={!stripe || isProcessing || !isPaymentElementComplete}
         >
-          {message}
-        </div>
-      )}
-    </form>
-  );
-};
+          {isProcessing
+            ? "Processing..."
+            : `Pay ${billingCycle === "monthly" ? "$99" : "$948"}`}
+        </button>
+        {message && (
+          <div
+            className={`mt-4 p-2 text-center ${
+              message.includes("succeeded") ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {message}
+          </div>
+        )}
+      </form>
+    );
+  };
 
   return (
     <section id="pricing" className="section-padding relative overflow-hidden">
@@ -381,7 +381,7 @@ const StripePaymentForm = ({ clientSecret }: { clientSecret: string }) => {
               </button>
             </div>
             <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <StripePaymentForm clientSecret={}/>
+              <StripePaymentForm clientSecret={clientSecret} />
             </Elements>
           </div>
         </div>
