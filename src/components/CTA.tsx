@@ -24,24 +24,27 @@ const CTA = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [stripeLoading, setStripeLoading] = useState(true);
 
-  useEffect(() => {
-    const loadStripeInstance = async () => {
-      const stripe = await loadStripe(
-        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
-      );
-      const clientSecret = new URLSearchParams(window.location.search).get(
-        "payment_intent_client_secret"
-      );
-      if (clientSecret) {
-        setClientSecret(clientSecret || "");
-      }
+ useEffect(() => {
+   const loadStripeInstance = async () => {
+     const stripe = await loadStripe(
+       import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+     );
+     const clientSecret = new URLSearchParams(window.location.search).get(
+       "payment_intent_client_secret"
+     );
 
-      setStripePromise(stripe);
-      setStripeLoading(false);
-    };
+     if (clientSecret) {
+       setClientSecret(clientSecret);
+     } else {
+       console.warn("No client secret found in URL");
+     }
 
-    loadStripeInstance();
-  }, []);
+     setStripePromise(stripe);
+     setStripeLoading(false);
+   };
+
+   loadStripeInstance();
+ }, []);
 
   const handleToggleChange = (checked: boolean) => {
     setBillingCycle(checked ? "yearly" : "monthly");
@@ -49,6 +52,7 @@ const CTA = () => {
 
   const handleSubmit = async () => {
     if (!isConfirmed || !userId) return;
+
     setStripeLoading(true);
     setIsProcessing(true);
 
@@ -61,8 +65,8 @@ const CTA = () => {
           body: JSON.stringify({
             amount:
               billingCycle === "monthly"
-                ? prices.monthly * 99 * 100
-                : prices.yearly * 79 * 100 * 12,
+                ? prices.monthly * 100
+                : prices.yearly * 100 * 12,
             mt5UserId: userId,
             billingCycle,
           }),
@@ -70,12 +74,13 @@ const CTA = () => {
       );
 
       const result = await response.json();
-      if (!response.ok)
+      if (!response.ok) {
         throw new Error(result.error || "Failed to create payment intent");
-      console.log("Payment Intent Result:", result.clientSecret);
+      }
 
+      console.log("Payment Intent Result:", result.clientSecret);
       setClientSecret(result.clientSecret);
-      setStripeLoading(false);
+      setShowModal(false); // Close the modal
     } catch (error) {
       console.error(error);
       toast({
@@ -86,7 +91,6 @@ const CTA = () => {
     } finally {
       setIsProcessing(false);
       setStripeLoading(false);
-      setShowModal(false);
     }
   };
 
@@ -103,95 +107,102 @@ const CTA = () => {
     "Priority customer support",
   ];
 
-  const StripePaymentForm = () => {
-    const stripe = useStripe();
-    const elements = useElements();
-    const [isPaymentElementComplete, setIsPaymentElementComplete] =
-      useState(false);
-    const [message, setMessage] = useState(null);
+const StripePaymentForm = ({ clientSecret }: { clientSecret: string }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isPaymentElementComplete, setIsPaymentElementComplete] =
+    useState(false);
+  const [message, setMessage] = useState(null);
 
-    useEffect(() => {
-      if (!stripe) {
-        return;
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      console.error("Stripe.js has not loaded yet.");
+      return;
+    }
+
+    setIsProcessing(true);
+    setMessage(null);
+
+    try {
+      // Submit the PaymentElement to validate payment details
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        console.error("Submit error:", submitError);
+        throw submitError;
       }
 
-      const clientSecret = new URLSearchParams(window.location.search).get(
-        "payment_intent_client_secret"
-      );
-      if (clientSecret) {
-        setClientSecret(clientSecret || "");
-      } else {
-        console.error("No client secret found in URL");
-        return;
-      }
-
-      stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-        setMessage(
-          paymentIntent.status === "succeeded"
-            ? "Your payment succeeded"
-            : "Unexpected error occurred"
-        );
-        setPaymentSuccess(paymentIntent.status === "succeeded");
-        console.log("Payment Intent:", paymentIntent);
-      });
-    }, [stripe]);
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-
-      if (!stripe || !elements) {
-        return;
-      }
-
-      const { error } = await stripe.confirmPayment({
+      // Confirm the payment
+      const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
+        clientSecret,
         confirmParams: {
-          return_url: window.location.origin,
+          return_url: `${window.location.origin}/success`,
         },
+        redirect: "if_required",
       });
 
-      if (
-        error &&
-        (error.type === "card_error" || error.type === "validation_error")
-      ) {
-        setMessage(error.message);
+      if (error) {
+        console.error("Payment error:", error);
+        throw error;
       }
-    };
-    const handleChange = (event: StripePaymentElementChangeEvent) => {
-      setIsPaymentElementComplete(event.complete);
-    };
 
-    return (
-      <form onSubmit={handleSubmit}>
-        <p className="text-black mb-4">Complete your payment here!</p>
-        <PaymentElement onChange={handleChange} />
-        <button
-          type="submit"
-          disabled={!stripe || isProcessing || !isPaymentElementComplete}
-          className={`w-full mt-4 py-2 rounded-sm ${
-            !stripe || isProcessing || !isPaymentElementComplete
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-trading-blue hover:bg-trading-blue-dark"
+      if (paymentIntent) {
+        switch (paymentIntent.status) {
+          case "succeeded":
+            setMessage("Payment succeeded!");
+            setPaymentSuccess(true);
+            break;
+          case "processing":
+            setMessage("Your payment is processing.");
+            break;
+          case "requires_payment_method":
+            setMessage("Payment failed. Please try again.");
+            break;
+          default:
+            setMessage("Something went wrong.");
+            break;
+        }
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      toast({
+        variant: "destructive",
+        title: "Payment Error",
+        description: error.message,
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleChange = (event: StripePaymentElementChangeEvent) => {
+    setIsPaymentElementComplete(event.complete);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <PaymentElement onChange={handleChange} />
+      <button
+        type="submit"
+        className="w-full bg-trading-blue py-2 rounded-sm hover:bg-trading-blue-dark mt-4"
+        disabled={!stripe || isProcessing || !isPaymentElementComplete}
+      >
+        {isProcessing ? "Processing..." : `Pay ${billingCycle === 'monthly' ? '$99' : '$948'}`}
+      </button>
+      {message && (
+        <div
+          className={`mt-4 p-2 text-center ${
+            message.includes("succeeded") ? "text-green-600" : "text-red-600"
           }`}
         >
-          {isProcessing
-            ? "Processing..."
-            : `Pay $${
-                billingCycle === "monthly" ? prices.monthly : prices.yearly
-              }`}
-        </button>
-        {message && (
-          <div
-            className={`mt-4 p-2 text-center ${
-              message.includes("succeeded") ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {message}
-          </div>
-        )}
-      </form>
-    );
-  };
+          {message}
+        </div>
+      )}
+    </form>
+  );
+};
 
   return (
     <section id="pricing" className="section-padding relative overflow-hidden">
@@ -301,7 +312,6 @@ const CTA = () => {
         </div>
       </div>
 
-      {/* User ID Confirmation Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-trading-gray-dark rounded-xl p-6 max-w-md w-full">
@@ -357,8 +367,6 @@ const CTA = () => {
           </div>
         </div>
       )}
-
-      {/* Stripe Payment Element */}
       {clientSecret && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-trading-gray-dark rounded-xl p-6 max-w-md w-full">
@@ -373,7 +381,7 @@ const CTA = () => {
               </button>
             </div>
             <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <StripePaymentForm />
+              <StripePaymentForm clientSecret={}/>
             </Elements>
           </div>
         </div>
