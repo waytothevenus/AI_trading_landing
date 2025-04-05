@@ -29,6 +29,13 @@ const CTA = () => {
       const stripe = await loadStripe(
         import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
       );
+      const clientSecret = new URLSearchParams(window.location.search).get(
+        "payment_intent_client_secret"
+      );
+      if (clientSecret) {
+        setClientSecret(clientSecret || "");
+      }
+
       setStripePromise(stripe);
       setStripeLoading(false);
     };
@@ -79,6 +86,7 @@ const CTA = () => {
     } finally {
       setIsProcessing(false);
       setStripeLoading(false);
+      setShowModal(false);
     }
   };
 
@@ -110,8 +118,9 @@ const CTA = () => {
       const clientSecret = new URLSearchParams(window.location.search).get(
         "payment_intent_client_secret"
       );
-
-      if (!clientSecret) {
+      if (clientSecret) {
+        setClientSecret(clientSecret || "");
+      } else {
         console.error("No client secret found in URL");
         return;
       }
@@ -123,6 +132,7 @@ const CTA = () => {
             : "Unexpected error occurred"
         );
         setPaymentSuccess(paymentIntent.status === "succeeded");
+        console.log("Payment Intent:", paymentIntent);
       });
     }, [stripe]);
 
@@ -185,7 +195,7 @@ const CTA = () => {
 
   return (
     <section id="pricing" className="section-padding relative overflow-hidden">
-      {stripeLoading && (
+      {(stripeLoading || isProcessing) && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <Loader className="h-8 w-8 animate-spin text-trading-blue" />
         </div>
@@ -193,7 +203,6 @@ const CTA = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <div className="glass-card rounded-2xl p-8 md:p-12 relative overflow-hidden">
-            {/* Background gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-trading-blue/10 to-trading-blue/5 dark:from-trading-blue/5 dark:to-black/20 z-0"></div>
 
             <div className="relative z-10">
@@ -385,6 +394,7 @@ const CTA = () => {
               onClick={() => {
                 setShowModal(false);
                 setPaymentSuccess(false);
+                setClientSecret("");
                 setIsConfirmed(false);
                 setUserId("");
               }}
