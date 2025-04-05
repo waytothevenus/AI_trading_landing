@@ -114,7 +114,7 @@ const StripePaymentForm = ({ clientSecret }: { clientSecret: string }) => {
     useState(false);
   const [message, setMessage] = useState(null);
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handlePaymentFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
@@ -138,7 +138,7 @@ const StripePaymentForm = ({ clientSecret }: { clientSecret: string }) => {
         elements,
         clientSecret,
         confirmParams: {
-          return_url: `${window.location.origin}/success`,
+          return_url: `${window.location.origin}`,
         },
         redirect: "if_required",
       });
@@ -182,7 +182,7 @@ const StripePaymentForm = ({ clientSecret }: { clientSecret: string }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handlePaymentFormSubmit}>
       <PaymentElement onChange={handleChange} />
       <button
         type="submit"
@@ -365,20 +365,36 @@ return (
       </div>
     )}
     {clientSecret && stripePromise && (
-      <Elements
-        stripe={stripePromise}
-        options={{
-          clientSecret,
-          appearance: {
-            theme: "stripe",
-            variables: {
-              colorText: "#00ffff",
-            },
-          },
-        }}
-      >
-        <StripePaymentForm clientSecret={clientSecret} />
-      </Elements>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white dark:bg-trading-gray-dark rounded-xl p-6 max-w-md w-full">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold">Complete Your Payment</h3>
+            <button
+              onClick={() => {
+                setClientSecret(""); // Reset clientSecret to close the modal
+              }}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <Elements
+            stripe={stripePromise}
+            options={{
+              clientSecret,
+              appearance: {
+                theme: "stripe",
+                variables: {
+                  colorText: "#00ffff",
+                },
+              },
+            }}
+          >
+            <StripePaymentForm clientSecret={clientSecret} />
+          </Elements>
+        </div>
+      </div>
     )}
     {paymentSuccess && (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
