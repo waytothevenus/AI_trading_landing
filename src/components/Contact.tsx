@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Phone, MessageSquare, Clock, CheckCircle2 } from "lucide-react";
+import { Mail, Phone, Clock, CheckCircle2 } from "lucide-react";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -32,7 +32,6 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Form validation
     if (!formState.name || !formState.email || !formState.message) {
       toast({
         variant: "destructive",
@@ -44,7 +43,6 @@ const Contact = () => {
 
     setFormState(prev => ({ ...prev, isSubmitting: true }));
 
-    // Simulate API call with timeout
     setTimeout(() => {
       setFormState(prev => ({ 
         ...prev, 
@@ -59,7 +57,6 @@ const Contact = () => {
       toast({
         title: "Message sent successfully",
         description: "We'll get back to you as soon as possible.",
-        // icon: <CheckCircle2 className="h-4 w-4 text-green-500" />
       });
     }, 1500);
   };

@@ -1,4 +1,3 @@
-import React from "react";
 import { Bot } from "lucide-react";
 import { FaTwitter, FaFacebook, FaLinkedin, FaGithub } from "react-icons/fa";
 
@@ -34,15 +33,15 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               {["twitter", "facebook", "linkedin", "github"].map((social) => {
-                const Icon = platformIcons[social]; // Get the icon component
+                const Icon = platformIcons[social];
                 return (
                   <a
                     key={social}
-                    href={socialLinks[social]} // Use the socialLinks object
+                    href={socialLinks[social]}
                     className="text-trading-gray-medium hover:text-trading-blue transition-colors"
                     aria-label={`${social} link`}
-                    target="_blank" // Add target="_blank" for external links
-                    rel="noopener noreferrer" // Add rel="noopener noreferrer" for security
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <div className="w-8 h-8 flex items-center justify-center rounded-full bg-trading-gray">
                       {Icon && <Icon className="h-4 w-4" fill="currentColor" />}

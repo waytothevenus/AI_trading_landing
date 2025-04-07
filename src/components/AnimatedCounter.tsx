@@ -51,7 +51,6 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
       const elapsedTime = now - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
       
-      // Easing function for smoother animation
       const easedProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       
       const currentCount = initialValue + (end - initialValue) * easedProgress;

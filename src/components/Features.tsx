@@ -1,15 +1,14 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FeatureCard from "./FeatureCard";
-import { 
-  BarChart, 
-  Bot, 
-  TrendingUp, 
-  Clock, 
-  Shield, 
-  BarChart3, 
-  Settings, 
-  Zap
+import {
+  Bot,
+  TrendingUp,
+  Clock,
+  Shield,
+  BarChart3,
+  Settings,
+  Zap,
 } from "lucide-react";
 import AnimatedCounter from "./AnimatedCounter";
 
@@ -49,7 +48,6 @@ const Features = () => {
           </p>
         </div>
 
-        {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           <div className="text-center p-6 rounded-xl bg-trading-blue/5 border-2 border-trading-blue/30">
             <div className="text-3xl md:text-4xl font-bold text-trading-blue mb-2">
@@ -77,7 +75,6 @@ const Features = () => {
           </div>
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <div
             className={`transition-all duration-500 transform ${
@@ -168,7 +165,6 @@ const Features = () => {
           </div>
         </div>
 
-        {/* Additional Feature Highlight */}
         <div
           className={`mt-16 p-8 rounded-xl bg-gradient-to-r from-trading-blue/10 to-trading-blue/5 border border-trading-blue/20 transition-all duration-700 delay-600 transform ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"

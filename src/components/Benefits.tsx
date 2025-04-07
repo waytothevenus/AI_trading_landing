@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   Clock, 
   TrendingUp, 
@@ -13,7 +13,6 @@ import { useTheme } from "@/hooks/useTheme";
 const Benefits = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const theme = useTheme();
 
   useEffect(() => {
     const observer = new IntersectionObserver(

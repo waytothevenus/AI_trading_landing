@@ -6,7 +6,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { loadStripe, StripePaymentElementChangeEvent } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "./ui/button";
 import { Switch } from "./ui/switch";
 import { toast } from "@/hooks/use-toast";

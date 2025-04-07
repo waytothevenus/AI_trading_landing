@@ -1,14 +1,13 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { BarChart, TrendingUp, Bot, Shield } from "lucide-react";
+import { TrendingUp, Bot, Shield } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const theme = useTheme();
   useEffect(() => {
-    // Small delay to ensure animation happens after component mounts
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 100);
