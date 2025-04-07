@@ -23,6 +23,7 @@ const CTA = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [stripeLoading, setStripeLoading] = useState(true);
+  const [licenseKey, setLicenseKey] = useState("");
 
   useEffect(() => {
     const loadStripeInstance = async () => {
@@ -78,7 +79,6 @@ const CTA = () => {
         throw new Error(result.error || "Failed to create payment intent");
       }
 
-      console.log("Payment Intent Result:", result.clientSecret);
       setClientSecret(result.clientSecret);
       setShowModal(false);
     } catch (error) {
@@ -94,8 +94,23 @@ const CTA = () => {
     }
   };
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
     setPaymentSuccess(true);
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/licenses/personal`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mt5UserId: userId,
+        }),
+      }
+    );
+    if (response.status === 200) {
+      const result = await response.json();
+      console.log("License key:", result.licenseKey);
+      setLicenseKey(result.licenseKey);
+    }
   };
 
   const prices = {
@@ -439,6 +454,12 @@ const CTA = () => {
               Your subscription is now active. Your MT5 account ({userId}) will
               be upgraded shortly.
             </p>
+            {licenseKey && (
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Your license key:{" "}
+                <span className="font-semibold">{licenseKey}</span>
+              </p>
+            )}
             <Button
               className="w-full bg-trading-blue hover:bg-trading-blue-dark mt-4"
               onClick={() => {
@@ -447,6 +468,7 @@ const CTA = () => {
                 setClientSecret("");
                 setIsConfirmed(false);
                 setUserId("");
+                setLicenseKey(""); // Reset the license key
               }}
             >
               Close
