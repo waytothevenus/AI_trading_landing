@@ -29,37 +29,64 @@ const Contact = () => {
     setFormState(prev => ({ ...prev, subject: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formState.name || !formState.email || !formState.message) {
-      toast({
-        variant: "destructive",
-        title: "Invalid submission",
-        description: "Please fill all required fields."
-      });
-      return;
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!formState.name || !formState.email || !formState.message) {
+    toast({
+      variant: "destructive",
+      title: "Invalid submission",
+      description: "Please fill all required fields.",
+    });
+    return;
+  }
+
+  setFormState((prev) => ({ ...prev, isSubmitting: true }));
+
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/send-email`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formState.name,
+          email: formState.email,
+          subject: formState.subject,
+          message: formState.message,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to send email. Please try again later.");
     }
 
-    setFormState(prev => ({ ...prev, isSubmitting: true }));
+    setFormState((prev) => ({
+      ...prev,
+      isSubmitting: false,
+      isSubmitted: true,
+      name: "",
+      email: "",
+      message: "",
+      subject: "general",
+    }));
 
-    setTimeout(() => {
-      setFormState(prev => ({ 
-        ...prev, 
-        isSubmitting: false,
-        isSubmitted: true,
-        name: "",
-        email: "",
-        message: "",
-        subject: "general"
-      }));
-      
-      toast({
-        title: "Message sent successfully",
-        description: "We'll get back to you as soon as possible.",
-      });
-    }, 1500);
-  };
+    toast({
+      title: "Message sent successfully",
+      description: "We'll get back to you as soon as possible.",
+    });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    toast({
+      variant: "destructive",
+      title: "Error",
+      description:
+        error.message || "Failed to send email. Please try again later.",
+    });
+    setFormState((prev) => ({ ...prev, isSubmitting: false }));
+  }
+};
 
   return (
     <section id="contact" className="section-padding bg-trading-gray/30 dark:bg-gray-900/30">
