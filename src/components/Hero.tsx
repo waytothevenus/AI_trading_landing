@@ -66,14 +66,19 @@ const Hero = () => {
               size="lg"
               className="bg-trading-blue hover:bg-trading-blue-dark transition-all duration-300 shadow-button hover:shadow-lg w-full sm:w-auto btn-effect"
             >
-              Start Free Trial
+              Get Started
             </Button>
             <Button
               variant="outline"
               size="lg"
               className="border-trading-blue text-trading-blue hover:bg-trading-blue/5 transition-all duration-300 w-full sm:w-auto"
             >
-              Learn More
+              <a
+                href="#features"
+                className="text-sm hover:text-decoration-none font-medium text-foreground"
+              >
+                Learn More
+              </a>
             </Button>
           </div>
         </div>
