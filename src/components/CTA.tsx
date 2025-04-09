@@ -108,8 +108,8 @@ const CTA = () => {
     );
     if (response.status === 200) {
       const result = await response.json();
-      console.log("License key:", result.licenseKey);
-      setLicenseKey(result.licenseKey);
+      console.log("License key:", result.license_key);
+      setLicenseKey(result.license_key);
     }
   };
 

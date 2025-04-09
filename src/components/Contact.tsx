@@ -45,7 +45,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/send-email`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/contact`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
