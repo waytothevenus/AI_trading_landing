@@ -108,7 +108,6 @@ const CTA = () => {
     );
     if (response.status === 200) {
       const result = await response.json();
-      console.log("License key:", result.license_key);
       setLicenseKey(result.license_key);
     }
   };
@@ -228,7 +227,13 @@ const CTA = () => {
             className="flex-1 bg-trading-blue py-2 rounded-sm hover:bg-trading-blue-dark"
             disabled={isProcessing || !isPaymentElementComplete}
           >
-            {isProcessing ? "Processing..." : "Pay"}
+            {isProcessing
+              ? "Processing..."
+              : `Pay $${
+                  billingCycle === "monthly"
+                    ? prices.monthly * 100
+                    : prices.yearly * 100 * 12
+                }`}
           </button>
         </div>
 
