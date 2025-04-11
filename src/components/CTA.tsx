@@ -231,8 +231,8 @@ const CTA = () => {
               ? "Processing..."
               : `Pay $${
                   billingCycle === "monthly"
-                    ? prices.monthly * 100
-                    : prices.yearly * 100 * 12
+                    ? prices.monthly
+                    : prices.yearly * 12
                 }`}
           </button>
         </div>
