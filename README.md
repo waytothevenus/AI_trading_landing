@@ -7,7 +7,6 @@
   <li>🎨 <strong>Tailwind CSS</strong> - Utility-first CSS framework</li>
   <li>⚛️ <strong>React</strong> - JavaScript library for building user interfaces</li>
 </ul>
-
 <h2>Features</h2>
 <ul>
   <li>Blazing fast development with Vite</li>
