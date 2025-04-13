@@ -24,7 +24,7 @@ const Footer = () => {
             <div className="flex items-center mb-4">
               <Bot className="h-6 w-6 text-trading-blue mr-2" />
               <span className="text-lg text-black font-semibold">
-                AI MT5 EA
+                AI MT4 EA
               </span>
             </div>
             <p className="text-sm text-trading-gray-medium mb-4">
@@ -73,7 +73,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-trading-gray-light">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-trading-gray-medium">
-              &copy; {currentYear} AI MT5 EA. All rights reserved.
+              &copy; {currentYear} AI MT4 EA. All rights reserved.
             </p>
             <div className="mt-4 md:mt-0">
               <ul className="flex space-x-6">

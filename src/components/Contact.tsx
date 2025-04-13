@@ -94,7 +94,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 slide-up-fade">Contact Us</h2>
           <p className="text-lg text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto slide-up-fade-delay-1">
-            Have questions or need support? Our team is here to help you succeed with AI MT5 Bot.
+            Have questions or need support? Our team is here to help you succeed with AI MT4 Bot.
           </p>
         </div>
 

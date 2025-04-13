@@ -132,7 +132,7 @@ const Benefits = () => {
                 {[
                   "No coding knowledge required",
                   "Simple setup process that takes minutes",
-                  "Compatible with all MT5 brokers",
+                  "Compatible with all MT4 brokers",
                   "Customizable to match your trading preferences",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start">

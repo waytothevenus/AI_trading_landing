@@ -21,7 +21,7 @@ const UserGuides = () => {
             User Guides
           </h2>
           <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto slide-up-fade-delay-1">
-            Comprehensive guides to help you get the most out of your AI MT5
+            Comprehensive guides to help you get the most out of your AI MT4
             trading bot
           </p>
         </div>
@@ -41,7 +41,7 @@ const UserGuides = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Bot className="mr-2 text-trading-blue" /> Getting Started
-                  with AI MT5 Bot
+                  with AI MT4 Bot
                 </CardTitle>
                 <CardDescription>
                   Learn the basics and set up your first automated trading
@@ -52,7 +52,7 @@ const UserGuides = () => {
                 <div className="space-y-4">
                   <h3 className="text-xl font-medium">1. Account Setup</h3>
                   <p>
-                    After subscribing to AI MT5 Bot, you'll receive login
+                    After subscribing to AI MT4 Bot, you'll receive login
                     credentials via email. Follow these steps to get started:
                   </p>
                   <ol className="list-decimal pl-5 space-y-2">
@@ -61,14 +61,14 @@ const UserGuides = () => {
                       website
                     </li>
                     <li>
-                      Login to your MT5 account using your broker credentials
+                      Login to your MT4 account using your broker credentials
                     </li>
                     <li>
-                      Access the AI MT5 Bot dashboard using your subscription
+                      Access the AI MT4 Bot dashboard using your subscription
                       credentials
                     </li>
                     <li>
-                      Connect your MT5 account to the AI bot using the API key
+                      Connect your MT4 account to the AI bot using the API key
                       provided in your dashboard
                     </li>
                     <li>
@@ -78,7 +78,7 @@ const UserGuides = () => {
                   </ol>
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-md border border-blue-100 dark:border-blue-800 mt-4">
                     <p className="text-sm">
-                      <strong>Tip:</strong> Make sure your MT5 platform is
+                      <strong>Tip:</strong> Make sure your MT4 platform is
                       running with internet connectivity whenever you want the
                       bot to trade.
                     </p>
@@ -106,7 +106,7 @@ const UserGuides = () => {
                 <div className="space-y-4">
                   <h3 className="text-xl font-medium">Strategy Selection</h3>
                   <p>
-                    AI MT5 Bot offers three ways to implement trading
+                    AI MT4 Bot offers three ways to implement trading
                     strategies:
                   </p>
                   <ul className="list-disc pl-5 space-y-2">
@@ -145,7 +145,7 @@ const UserGuides = () => {
               <CardHeader>
                 <CardTitle>Advanced Features</CardTitle>
                 <CardDescription>
-                  Unlock the full potential of AI MT5 Bot with these advanced
+                  Unlock the full potential of AI MT4 Bot with these advanced
                   capabilities
                 </CardDescription>
               </CardHeader>
@@ -153,7 +153,7 @@ const UserGuides = () => {
                 <div className="space-y-4">
                   <h3 className="text-xl font-medium">AI Market Analysis</h3>
                   <p>
-                    The AI MT5 Bot uses advanced machine learning algorithms to
+                    The AI MT4 Bot uses advanced machine learning algorithms to
                     analyze market data and identify potential trading
                     opportunities:
                   </p>

@@ -118,7 +118,7 @@ const CTA = () => {
   };
 
   const features = [
-    "AI-powered MT5 trading bot",
+    "AI-powered MT4 trading bot",
     "24/7 automated trading",
     "Real-time market analysis",
     "Risk management tools",
@@ -269,7 +269,7 @@ const CTA = () => {
                 </h2>
                 <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto">
                   Join thousands of traders who are already benefiting from our
-                  AI-powered MT5 trading bot.
+                  AI-powered MT4 trading bot.
                 </p>
               </div>
 
@@ -376,7 +376,7 @@ const CTA = () => {
                   htmlFor="userId"
                   className="block text-sm font-medium mb-1"
                 >
-                  MT5 User ID
+                  MT4 User ID
                 </label>
                 <input
                   id="userId"
@@ -384,7 +384,7 @@ const CTA = () => {
                   value={userId}
                   onChange={(e) => setUserId(e.target.value)}
                   className="w-full px-3 py-2 border rounded-md dark:bg-trading-gray-dark/80"
-                  placeholder="Enter your MT5 user ID"
+                  placeholder="Enter your MT4 user ID"
                 />
               </div>
 
@@ -397,7 +397,7 @@ const CTA = () => {
                   className="h-4 w-4 rounded border-gray-300 text-trading-blue focus:ring-trading-blue"
                 />
                 <label htmlFor="confirmCheckbox" className="ml-2 text-sm">
-                  I confirm this is my correct MT5 user ID
+                  I confirm this is my correct MT4 user ID
                 </label>
               </div>
 
@@ -456,7 +456,7 @@ const CTA = () => {
             </div>
             <h3 className="text-xl font-semibold mb-2">Payment Successful!</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Your subscription is now active. Your MT5 account ({userId}) will
+              Your subscription is now active. Your MT4 account ({userId}) will
               be upgraded shortly.
             </p>
             {licenseKey && (

@@ -49,7 +49,7 @@ const Hero = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            An advanced MT5 trading EA powered by AI that analyzes market
+            An advanced MT4 trading EA powered by AI that analyzes market
             patterns, executes trades, and maximizes your profits with minimal
             effort.
           </p>
@@ -89,13 +89,13 @@ const Hero = () => {
         >
           <div className="aspect-video max-w-4xl mx-auto rounded-xl overflow-hidden shadow-feature bg-white/50 backdrop-blur-sm border border-white/30">
             <div className="text-center p-8 display-block">
-              <img src="/public/AI_MT5_landing.png" alt="AI MT5 Landing" />
+              <img src="/public/AI_MT5_landing.png" alt="AI MT4 Landing" />
               <p
                 className={`text-lg font-medium ${
                   theme.theme === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                AI MT5 EA Trading dashboard visualization
+                AI MT4 EA Trading dashboard visualization
               </p>
               <p className="text-sm text-trading-gray-medium mt-2">
                 Real-time market analytics powered by AI

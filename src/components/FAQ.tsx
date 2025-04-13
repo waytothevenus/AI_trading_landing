@@ -34,7 +34,7 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto slide-up-fade-delay-1">
-            Find answers to common questions about our AI MT5 trading bot
+            Find answers to common questions about our AI MT4 trading bot
           </p>
         </div>
 
@@ -112,16 +112,16 @@ const FAQ = () => {
 // FAQ data
 const faqs = [
   {
-    question: "What is AI MT5 Bot?",
-    answer: "AI MT5 Bot is an intelligent algorithmic trading solution that integrates with MetaTrader 5 to automate your trading strategies. It uses advanced artificial intelligence to analyze market data, identify opportunities, and execute trades with precision."
+    question: "What is AI MT4 Bot?",
+    answer: "AI MT4 Bot is an intelligent algorithmic trading solution that integrates with MetaTrader 5 to automate your trading strategies. It uses advanced artificial intelligence to analyze market data, identify opportunities, and execute trades with precision."
   },
   {
     question: "Do I need to have MetaTrader 5 to use this bot?",
-    answer: "Yes, you need to have MetaTrader 5 installed and a trading account with a broker that supports MT5. Our bot interfaces directly with your MT5 platform to execute trades."
+    answer: "Yes, you need to have MetaTrader 5 installed and a trading account with a broker that supports MT4. Our bot interfaces directly with your MT4 platform to execute trades."
   },
   {
-    question: "How is AI MT5 Bot different from other trading bots?",
-    answer: "Unlike conventional trading bots that rely solely on predetermined rules, our AI MT5 Bot uses machine learning algorithms that continuously learn and adapt to changing market conditions. It can identify patterns, analyze sentiment, and make predictions that traditional indicator-based systems might miss."
+    question: "How is AI MT4 Bot different from other trading bots?",
+    answer: "Unlike conventional trading bots that rely solely on predetermined rules, our AI MT4 Bot uses machine learning algorithms that continuously learn and adapt to changing market conditions. It can identify patterns, analyze sentiment, and make predictions that traditional indicator-based systems might miss."
   },
   {
     question: "Is the bot suitable for beginners?",
@@ -129,7 +129,7 @@ const faqs = [
   },
   {
     question: "What markets can I trade with the bot?",
-    answer: "The AI MT5 Bot can trade any market available on your MetaTrader 5 platform, including:<ul class='list-disc pl-5 mt-2 space-y-1'><li>Forex</li><li>Cryptocurrencies</li><li>Indices</li><li>Commodities</li><li>Stocks</li><li>Futures</li></ul>"
+    answer: "The AI MT4 Bot can trade any market available on your MetaTrader 5 platform, including:<ul class='list-disc pl-5 mt-2 space-y-1'><li>Forex</li><li>Cryptocurrencies</li><li>Indices</li><li>Commodities</li><li>Stocks</li><li>Futures</li></ul>"
   },
   {
     question: "How much money do I need to start?",

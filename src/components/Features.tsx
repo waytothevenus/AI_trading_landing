@@ -43,7 +43,7 @@ const Features = () => {
             Powerful AI Trading Features
           </h2>
           <p className="text-trading-gray-medium max-w-2xl mx-auto">
-            Our cutting-edge MT5 trading EA combines artificial intelligence
+            Our cutting-edge MT4 trading EA combines artificial intelligence
             with advanced trading algorithms to deliver exceptional results.
           </p>
         </div>

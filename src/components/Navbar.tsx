@@ -37,7 +37,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Bot className="h-8 w-8 text-trading-blue mr-2" />
             <span className="text-xl font-semibold tracking-tight">
-              AI MT5 EA
+              AI MT4 EA
             </span>
           </div>
 

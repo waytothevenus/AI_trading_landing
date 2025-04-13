@@ -97,7 +97,7 @@ const Testimonials = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 slide-up-fade">What Our Users Say</h2>
           <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto slide-up-fade-delay-1">
-            Don't just take our word for it. Here's what traders around the world have to say about our AI-powered MT5 trading bot.
+            Don't just take our word for it. Here's what traders around the world have to say about our AI-powered MT4 trading bot.
           </p>
         </div>
         
