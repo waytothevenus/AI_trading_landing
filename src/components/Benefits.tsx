@@ -8,7 +8,6 @@ import {
   BookOpen, 
   RefreshCw
 } from "lucide-react";
-import { useTheme } from "@/hooks/useTheme";
 
 const Benefits = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -79,10 +78,10 @@ const Benefits = () => {
   ];
 
   return (
-    <section id="benefits" className="section-padding bg-trading-gray">
+    <section id="benefits" className="section-padding bg-trading-blue-light/20">
       <div className="container mx-auto px-6">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-black">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-trading-blue">
             Why Choose Our AI Trading Bot
           </h2>
           <p className="text-trading-gray-medium">
@@ -95,17 +94,17 @@ const Benefits = () => {
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className={`bg-white text-black rounded-xl p-6 shadow-soft transition-all duration-500 transform ${
+              className={`bg-white rounded-xl p-6 shadow-soft border border-trading-blue/10 transition-all duration-500 transform hover:shadow-feature hover:-translate-y-1 ${
                 isVisible
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${benefit.delay}ms` }}
             >
-              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-trading-blue/10 mb-4">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-trading-yellow/20 border border-trading-yellow/30 mb-4">
                 <div className="text-trading-blue">{benefit.icon}</div>
               </div>
-              <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
+              <h3 className="text-xl font-semibold mb-2 text-trading-blue">{benefit.title}</h3>
               <p className="text-trading-gray-medium text-sm">
                 {benefit.description}
               </p>
@@ -114,13 +113,13 @@ const Benefits = () => {
         </div>
 
         <div
-          className={`mt-16 bg-white rounded-xl p-8 shadow-feature transition-all duration-700 delay-600 transform ${
+          className={`mt-16 bg-white rounded-xl p-8 shadow-feature border border-trading-blue/10 transition-all duration-700 delay-600 transform ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-2xl text-black font-bold mb-4">
+              <h3 className="text-2xl font-bold mb-4 text-trading-blue">
                 Experience the Future of Trading Today
               </h3>
               <p className="text-trading-gray-medium mb-6">
@@ -136,7 +135,7 @@ const Benefits = () => {
                   "Customizable to match your trading preferences",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start">
-                    <div className="mr-3 text-trading-blue mt-1">
+                    <div className="mr-3 text-trading-yellow mt-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4"
@@ -150,13 +149,13 @@ const Benefits = () => {
                         />
                       </svg>
                     </div>
-                    <span className="text-sm text-black">{item}</span>
+                    <span className="text-sm text-trading-blue">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="bg-trading-blue/5 p-6 rounded-xl border border-trading-blue/10">
-              <h4 className="font-semibold text-black mb-4 text-center">
+            <div className="bg-gradient-to-br from-trading-yellow/10 to-trading-orange/10 p-6 rounded-xl border border-trading-yellow/20">
+              <h4 className="font-semibold text-trading-blue mb-4 text-center">
                 Average Performance Metrics
               </h4>
               <div className="space-y-4">
@@ -170,13 +169,13 @@ const Benefits = () => {
                     <span className="text-sm text-trading-gray-medium">
                       {stat.label}
                     </span>
-                    <span className="font-mono text-black font-semibold">
+                    <span className="font-mono text-trading-blue font-semibold">
                       {stat.value}
                     </span>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 pt-6 border-t border-trading-blue/10 text-center">
+              <div className="mt-6 pt-6 border-t border-trading-yellow/20 text-center">
                 <p className="text-xs text-trading-gray-medium italic">
                   *Past performance is not indicative of future results. Trading
                   involves risk.

@@ -1,4 +1,3 @@
-
 import { 
   Carousel, 
   CarouselContent, 
@@ -19,26 +18,26 @@ type TestimonialProps = {
 
 const Testimonial = ({ quote, author, role, company, stars }: TestimonialProps) => (
   <Card className="border-none shadow-none bg-transparent">
-    <CardContent className="p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-100 dark:border-gray-700 shadow-soft">
+    <CardContent className="p-6 bg-white/90 backdrop-blur-sm rounded-xl border border-trading-blue/10 shadow-soft">
       <div className="flex mb-4">
         {Array(5).fill(0).map((_, i) => (
           <Star 
             key={i} 
             size={16} 
-            className={`${i < stars ? "text-yellow-400 fill-yellow-400" : "text-gray-300 dark:text-gray-600"} mr-1`} 
+            className={`${i < stars ? "text-trading-yellow fill-trading-yellow" : "text-gray-300"} mr-1`} 
           />
         ))}
       </div>
-      <blockquote className="text-gray-700 dark:text-gray-300 italic mb-4">
+      <blockquote className="text-trading-gray-medium italic mb-4">
         "{quote}"
       </blockquote>
       <div className="flex items-center">
-        <div className="w-10 h-10 bg-trading-blue/20 dark:bg-trading-blue/30 rounded-full flex items-center justify-center text-trading-blue font-medium">
+        <div className="w-10 h-10 bg-trading-blue/20 rounded-full flex items-center justify-center text-trading-blue font-medium">
           {author.split(' ').map(name => name[0]).join('')}
         </div>
         <div className="ml-3">
-          <div className="font-medium text-sm">{author}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">{role}, {company}</div>
+          <div className="font-medium text-sm text-trading-blue">{author}</div>
+          <div className="text-xs text-trading-gray-medium">{role}, {company}</div>
         </div>
       </div>
     </CardContent>
@@ -92,11 +91,11 @@ const Testimonials = () => {
   ];
 
   return (
-    <section id="testimonials" className="section-padding bg-trading-gray/50 dark:bg-gray-900/50 relative overflow-hidden">
+    <section id="testimonials" className="section-padding bg-gradient-to-br from-trading-blue-light/20 to-trading-yellow/10 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 slide-up-fade">What Our Users Say</h2>
-          <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto slide-up-fade-delay-1">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 slide-up-fade text-trading-blue">What Our Users Say</h2>
+          <p className="text-trading-gray-medium max-w-2xl mx-auto slide-up-fade-delay-1">
             Don't just take our word for it. Here's what traders around the world have to say about our AI-powered MT4 trading bot.
           </p>
         </div>
@@ -117,8 +116,8 @@ const Testimonials = () => {
               ))}
             </CarouselContent>
             <div className="flex justify-center mt-8">
-              <CarouselPrevious className="static translate-y-0 mr-2" />
-              <CarouselNext className="static translate-y-0 ml-2" />
+              <CarouselPrevious className="static translate-y-0 mr-2 border-trading-blue text-trading-blue hover:bg-trading-blue hover:text-white" />
+              <CarouselNext className="static translate-y-0 ml-2 border-trading-blue text-trading-blue hover:bg-trading-blue hover:text-white" />
             </div>
           </Carousel>
         </div>

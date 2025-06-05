@@ -10,6 +10,7 @@ const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFaqs, setFilteredFaqs] = useState<typeof faqs>(faqs);
   const navigate = useNavigate();
+  
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -27,22 +28,22 @@ const FAQ = () => {
   };
 
   return (
-    <section id="faq" className="section-padding">
+    <section id="faq" className="section-padding bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 slide-up-fade">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 slide-up-fade text-trading-blue">
             Frequently Asked Questions
           </h2>
-          <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto slide-up-fade-delay-1">
+          <p className="text-trading-gray-medium max-w-2xl mx-auto slide-up-fade-delay-1">
             Find answers to common questions about our AI MT4 trading bot
           </p>
         </div>
 
         <div className="max-w-3xl mx-auto mb-10 slide-up-fade-delay-2">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-trading-gray-medium" />
             <Input
-              className="pl-10 py-6 text-base"
+              className="pl-10 py-6 text-base border-trading-blue/20 focus:border-trading-blue"
               placeholder="Search for answers..."
               value={searchTerm}
               onChange={handleSearch}
@@ -53,15 +54,15 @@ const FAQ = () => {
         <div className="max-w-3xl mx-auto slide-up-fade-delay-3">
           {filteredFaqs.length === 0 ? (
             <div className="text-center py-10">
-              <h3 className="text-xl font-medium mb-4">No results found</h3>
-              <p className="text-trading-gray-medium dark:text-gray-400 mb-6">
+              <h3 className="text-xl font-medium mb-4 text-trading-blue">No results found</h3>
+              <p className="text-trading-gray-medium mb-6">
                 We couldn't find any FAQs matching your search. Try a different
                 term or contact support.
               </p>
-              <Button className="bg-trading-blue hover:bg-trading-blue-dark">
+              <Button className="bg-trading-yellow hover:bg-trading-yellow-dark text-trading-blue">
                 <a
                   href="#contact"
-                  className="text-sm hover:text-decoration-none font-medium text-foreground"
+                  className="text-sm hover:text-decoration-none font-medium"
                 >
                   Contact Support
                 </a>
@@ -73,12 +74,12 @@ const FAQ = () => {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+                  className="border border-trading-blue/20 rounded-lg overflow-hidden"
                 >
-                  <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 text-left font-medium">
+                  <AccordionTrigger className="px-6 py-4 hover:bg-trading-blue-light/30 text-left font-medium text-trading-blue">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="px-6 py-4 bg-gray-50/50 dark:bg-gray-800/20">
+                  <AccordionContent className="px-6 py-4 bg-trading-blue-light/10 text-trading-gray-medium">
                     <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
                   </AccordionContent>
                 </AccordionItem>
@@ -87,18 +88,18 @@ const FAQ = () => {
           )}
         </div>
         <div className="mt-20 text-center">
-          <h3 className="text-2xl font-bold mb-6">Still Have Questions?</h3>
-          <p className="text-trading-gray-medium dark:text-gray-300 max-w-2xl mx-auto mb-8">
+          <h3 className="text-2xl font-bold mb-6 text-trading-blue">Still Have Questions?</h3>
+          <p className="text-trading-gray-medium max-w-2xl mx-auto mb-8">
             Our team is here to help you make the most of our AI trading bot.
             Contact us with any questions.
           </p>
           <Button
             variant="outline"
-            className="border-trading-blue text-trading-blue hover:bg-trading-blue/5 dark:border-trading-blue/60 dark:text-trading-blue-light dark:hover:bg-trading-blue/10 transition-all duration-300"
+            className="border-trading-yellow text-trading-blue hover:bg-trading-yellow/10 transition-all duration-300"
           >
             <a
               href="#contact"
-              className="text-sm hover:text-decoration-none font-medium text-foreground "
+              className="text-sm hover:text-decoration-none font-medium"
             >
               Contact Support
             </a>
