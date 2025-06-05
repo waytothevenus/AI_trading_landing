@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,17 +62,25 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors for the trading bot landing page
+				// Updated color theme based on the uploaded image
 				trading: {
-					blue: '#0E76FD',
-					'blue-dark': '#0255c3',
-					'blue-light': '#e6f0ff',
-					gray: '#f4f7fa',
-					'gray-dark': '#2c3e50',
-					'gray-medium': '#8492a6',
-					'gray-light': '#e5e9f2',
-					green: '#10b981',
-					red: '#ef4444',
+					blue: '#1E3A8A', // Deep blue from the image
+					'blue-dark': '#1E40AF',
+					'blue-light': '#DBEAFE',
+					'blue-vibrant': '#2563EB', // Vibrant blue accent
+					yellow: '#FCD34D', // Golden yellow from the image
+					'yellow-dark': '#F59E0B',
+					'yellow-light': '#FEF3C7',
+					'yellow-vibrant': '#FBBF24', // Bright yellow accent
+					orange: '#FB923C', // Orange accent from the image
+					'orange-dark': '#EA580C',
+					'orange-light': '#FED7AA',
+					gray: '#F8FAFC',
+					'gray-dark': '#1E293B',
+					'gray-medium': '#64748B',
+					'gray-light': '#E2E8F0',
+					green: '#10B981',
+					red: '#EF4444',
 				}
 			},
 			borderRadius: {
@@ -88,7 +95,8 @@ export default {
 			boxShadow: {
 				'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
 				'feature': '0 5px 30px rgba(0, 0, 0, 0.08)',
-				'button': '0 4px 14px rgba(14, 118, 253, 0.25)',
+				'button': '0 4px 14px rgba(30, 58, 138, 0.25)',
+				'yellow-glow': '0 4px 14px rgba(252, 211, 77, 0.25)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -116,8 +124,8 @@ export default {
 					'50%': { transform: 'translateY(-10px)' }
 				},
 				'glow': {
-					'0%, 100%': { boxShadow: '0 0 10px rgba(14, 118, 253, 0.3)' },
-					'50%': { boxShadow: '0 0 20px rgba(14, 118, 253, 0.6)' }
+					'0%, 100%': { boxShadow: '0 0 10px rgba(30, 58, 138, 0.3)' },
+					'50%': { boxShadow: '0 0 20px rgba(30, 58, 138, 0.6)' }
 				},
 				'pulse-slow': {
 					'0%, 100%': { opacity: '0.8' },

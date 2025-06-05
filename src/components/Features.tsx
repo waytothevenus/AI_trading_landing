@@ -36,10 +36,10 @@ const Features = () => {
   }, [hasAnimated]);
 
   return (
-    <section id="features" className="section-padding relative overflow-hidden">
+    <section id="features" className="section-padding relative overflow-hidden bg-gradient-to-br from-white to-trading-blue-light/30">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-trading-blue">
             Powerful AI Trading Features
           </h2>
           <p className="text-trading-gray-medium max-w-2xl mx-auto">
@@ -49,14 +49,14 @@ const Features = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border-2 border-trading-blue/30">
+          <div className="text-center p-6 rounded-xl bg-gradient-to-br from-trading-yellow/10 to-trading-orange/10 border-2 border-trading-yellow/30">
             <div className="text-3xl md:text-4xl font-bold text-trading-blue mb-2">
               <AnimatedCounter end={95} suffix="%" />
             </div>
             <p className="text-sm text-trading-gray-medium">Trading Accuracy</p>
           </div>
 
-          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border-2 border-trading-blue/30">
+          <div className="text-center p-6 rounded-xl bg-gradient-to-br from-trading-blue/10 to-trading-blue-vibrant/10 border-2 border-trading-blue/30">
             <div className="text-3xl md:text-4xl font-bold text-trading-blue mb-2">
               <AnimatedCounter end={24} suffix="/7" />
             </div>
@@ -65,7 +65,7 @@ const Features = () => {
             </p>
           </div>
 
-          <div className="text-center p-6 rounded-xl bg-trading-blue/5 border-2 border-trading-blue/30">
+          <div className="text-center p-6 rounded-xl bg-gradient-to-br from-trading-orange/10 to-trading-yellow/10 border-2 border-trading-orange/30">
             <div className="text-3xl md:text-4xl font-bold text-trading-blue mb-2">
               <AnimatedCounter prefix="+" end={300} />
             </div>
@@ -102,7 +102,7 @@ const Features = () => {
               icon={<TrendingUp className="h-5 w-5" />}
               title="Smart Trend Detection"
               description="Automatically identifies market trends and generates optimal entry and exit points."
-              color="text-green-500"
+              color="text-trading-yellow-dark"
             />
           </div>
           <div
@@ -116,7 +116,7 @@ const Features = () => {
               icon={<Clock className="h-5 w-5" />}
               title="24/7 Automated Trading"
               description="Trade around the clock without manual intervention, never missing profitable opportunities."
-              color="text-purple-500"
+              color="text-trading-orange"
             />
           </div>
           <div
@@ -130,7 +130,7 @@ const Features = () => {
               icon={<Shield className="h-5 w-5" />}
               title="Advanced Risk Management"
               description="Sophisticated stop-loss and take-profit mechanisms to protect your capital and maximize returns."
-              color="text-orange-500"
+              color="text-trading-blue-vibrant"
             />
           </div>
 
@@ -145,7 +145,7 @@ const Features = () => {
               icon={<BarChart3 className="h-5 w-5" />}
               title="Performance Analytics"
               description="Comprehensive reports and analytics to track your trading performance and profitability."
-              color="text-sky-500"
+              color="text-trading-yellow-dark"
             />
           </div>
 
@@ -166,16 +166,16 @@ const Features = () => {
         </div>
 
         <div
-          className={`mt-16 p-8 rounded-xl bg-gradient-to-r from-trading-blue/10 to-trading-blue/5 border border-trading-blue/20 transition-all duration-700 delay-600 transform ${
+          className={`mt-16 p-8 rounded-xl bg-gradient-to-r from-trading-blue/10 via-trading-blue-vibrant/5 to-trading-yellow/10 border border-trading-blue/20 transition-all duration-700 delay-600 transform ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
           <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="w-16 h-16 flex items-center justify-center rounded-full bg-trading-blue/20">
+            <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-trading-yellow/20 to-trading-orange/20 border border-trading-yellow/30">
               <Zap className="h-8 w-8 text-trading-blue" />
             </div>
             <div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-xl font-bold mb-2 text-trading-blue">
                 ML-Enhanced Pattern Recognition
               </h3>
               <p className="text-trading-gray-medium">
